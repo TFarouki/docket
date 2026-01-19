@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('appointments', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('client_id')->nullable()->constrained()->nullOnDelete(); // Can be null if it's a new lead not in DB yet? No, we add "Lead" to clients
+            $table->foreignId('matter_id')->nullable()->constrained()->nullOnDelete(); // Optional, if related to specific file
+            $table->foreignId('assigned_to')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('title'); // "Meeting with X"
+            $table->dateTime('start_time');
+            $table->dateTime('end_time')->nullable();
+            $table->string('status')->default('scheduled'); // scheduled, completed, cancelled, no_show
+            $table->text('notes')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('appointments');
+    }
+};

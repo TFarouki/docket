@@ -1,0 +1,18 @@
+{
+    "Dashboard": "لوحة التحكم",
+    "Clients": "الموكلين",
+    "Matters": "الملفات والقضايا",
+    "Tasks": "المهام",
+    "Calendar": "الأجندة",
+    "Finance": "المالية",
+    "Reports": "التقارير",
+    "Settings": "الإعدادات",
+    "Log Out": "تسجيل الخروج",
+    "Search": "بحث...",
+    "Language": "اللغة",
+    "System Language": "لغة النظام",
+    "Update the global system language for all users.": "تحديث لغة النظام العامة لجميع المستخدمين.",
+    "Select Language": "اختر اللغة",
+    "Save": "حفظ",
+    "Saved.": "تم الحفظ."
+}

@@ -1,0 +1,35 @@
+# Law Firm Management System (Docket) - Task List
+
+- [x] Planning & Requirements [x]
+    - [ ] Define Core Modules:
+        - [ ] Litigation (Court Cases - الجنح، العقار، الإداري)
+        - [ ] Legal Procedures (Services - التحفيظ، الاستشارات، الإجراءات)
+
+        - [ ] Client Journey (Reference/Lead -> Appointment -> Client -> Service)
+        - [ ] Digital Archiving (Electronic Documents)
+        - [ ] Financial Module (Billing, Expenses, Profitability)
+            - [ ] Fees vs Expenses Tracking
+            - [ ] Payment Status (Partial, Full, Deferred)
+            - [ ] Reimbursements (Paid by Firm)
+            - [ ] Profitability Reports per Case
+    - [ ] Define User Roles & Permissions (Flexible System)
+        - [ ] Roles: Owner, Partner, Associate, Trainee, Manager, Secretary, Clerk, Runner.
+        - [ ] Capability to assign multiple roles to one user.
+    - [ ] Task & Appointment Management Details
+        - [ ] Calendar View for Appointments.
+        - [ ] Task Assignment & Tracking (related to Roles).
+    - [ ] Create Database Schema Design
+    - [ ] Create Implementation Plan
+- [x] Project Setup [x]
+    - [x] Initialize Laravel Project
+    - [x] Setup Frontend (Vue/Inertia)
+    - [x] Setup Database & Authentication
+    - [x] Create Documentation (README, AI_CONTEXT, AI_RULES)
+- [/] Implementation
+    - [x] UI/UX Refinement
+        - [x] Hostinger-style AppBar (Centered Logo, Collapsible Sidebar)
+        - [x] Multi-language Support (AR/EN/FR)
+        - [x] Global Language Setting (Admin Profile)
+    - [/] Client Management Module
+    - [ ] Case Management Module
+    - [ ] ... (To be defined)
