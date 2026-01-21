@@ -12,8 +12,8 @@
             - [ ] Payment Status (Partial, Full, Deferred)
             - [ ] Reimbursements (Paid by Firm)
             - [ ] Profitability Reports per Case
-    - [ ] Define User Roles & Permissions (Flexible System)
-        - [ ] Roles: Owner, Partner, Associate, Trainee, Manager, Secretary, Clerk, Runner.
+    - [x] Define User Roles & Permissions (Flexible System)
+        - [ ] Roles: Super Admin, Admin, Owner, Partner, Employed Lawyer, Trainee Lawyer, Manager, Secretary, Clerk, Runner, Trainee Employee.
         - [ ] Capability to assign multiple roles to one user.
     - [ ] Task & Appointment Management Details
         - [ ] Calendar View for Appointments.
@@ -43,4 +43,14 @@
     - [x] Refinements & Enhancements
         - [x] Matter: Enhance Case Type selection (Detailed)
         - [x] Matter: Specify Court/Tribunal (Registration location)
+    - [x] User Management (Admin)
+        - [x] Roles & Permissions Seeder
+        - [x] User CRUD (Controller & Routes)
+        - [x] User UI (Index, Create, Edit)
+        - [x] Professional File (Documents)
+            - [x] Document Categories (Searchable/Addable)
+            - [x] Document Upload & Management
+    - [x] System Configuration (Root)
+        - [x] Dynamic Feature Toggles (SoftDelete, UserTracking)
+        - [x] System Settings UI
     - [ ] ... (To be defined)

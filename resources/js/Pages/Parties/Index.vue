@@ -56,7 +56,6 @@ watch(search, (value) => {
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">{{ $t('Name') }}</th>
-                                    <th scope="col" class="px-6 py-3">{{ $t('Type') }}</th>
                                     <th scope="col" class="px-6 py-3">{{ $t('Phone') }}</th>
                                     <th scope="col" class="px-6 py-3">{{ $t('National ID') }}</th>
                                     <th scope="col" class="px-6 py-3 text-end">{{ $t('Actions') }}</th>
@@ -66,18 +65,6 @@ watch(search, (value) => {
                                 <tr v-for="party in parties.data" :key="party.id" class="bg-white border-b hover:bg-gray-50">
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                         {{ party.full_name }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span 
-                                            class="px-2 py-1 text-xs rounded-full"
-                                            :class="{
-                                                'bg-green-100 text-green-800': party.type === 'client',
-                                                'bg-red-100 text-red-800': party.type === 'opponent',
-                                                'bg-gray-100 text-gray-800': party.type === 'other'
-                                            }"
-                                        >
-                                            {{ $t(party.type) }}
-                                        </span>
                                     </td>
                                     <td class="px-6 py-4">{{ party.phone || '-' }}</td>
                                     <td class="px-6 py-4">{{ party.national_id || '-' }}</td>

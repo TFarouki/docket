@@ -33,7 +33,6 @@ class PartyController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type' => 'required|in:client,opponent,other',
             'full_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
@@ -56,7 +55,6 @@ class PartyController extends Controller
     public function update(Request $request, Party $party)
     {
         $validated = $request->validate([
-            'type' => 'required|in:client,opponent,other',
             'full_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',

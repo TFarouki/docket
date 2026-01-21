@@ -12,7 +12,6 @@ const props = defineProps({
 });
 
 const form = useForm({
-    type: props.party.type,
     full_name: props.party.full_name,
     national_id: props.party.national_id,
     phone: props.party.phone,
@@ -45,25 +44,7 @@ const destroy = () => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100 p-6">
                     <form @submit.prevent="submit" class="space-y-6">
                         
-                        <!-- Type Selection -->
-                        <div>
-                            <InputLabel for="type" :value="$t('Party Type')" />
-                            <div class="mt-2 flex gap-4">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" value="client" v-model="form.type" class="text-brand-600 focus:ring-brand-500 border-gray-300">
-                                    <span>{{ $t('Client') }}</span>
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" value="opponent" v-model="form.type" class="text-red-600 focus:ring-red-500 border-gray-300">
-                                    <span>{{ $t('Opponent') }}</span>
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" value="other" v-model="form.type" class="text-gray-600 focus:ring-gray-500 border-gray-300">
-                                    <span>{{ $t('Other') }}</span>
-                                </label>
-                            </div>
-                            <InputError class="mt-2" :message="form.errors.type" />
-                        </div>
+
 
                         <!-- Full Name -->
                         <div>

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Extensions\DynamicFeatures\HasDynamicFeatures;
 
 class CourtCase extends Model
 {
-    use HasFactory;
+    use HasFactory, HasDynamicFeatures;
 
     protected $fillable = [
         'matter_id',
