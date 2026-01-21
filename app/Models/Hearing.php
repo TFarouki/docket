@@ -8,7 +8,11 @@ use App\Extensions\DynamicFeatures\HasDynamicFeatures;
 
 class Hearing extends Model
 {
+<<<<<<< HEAD
     use HasFactory, HasDynamicFeatures;
+=======
+    use HasFactory;
+>>>>>>> origin/jule-12265746249537321065
 
     protected $fillable = [
         'court_case_id',

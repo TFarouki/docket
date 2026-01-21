@@ -11,6 +11,7 @@ use App\Http\Controllers\HearingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentCategoryController;
+use App\Http\Controllers\AppointmentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -49,6 +50,9 @@ Route::middleware('auth')->group(function () {
     // System Settings (Root only)
     Route::get('system-settings', [SystemSettingController::class, 'index'])->name('system-settings.index');
     Route::post('system-settings', [SystemSettingController::class, 'update'])->name('system-settings.update');
+
+    // CRM: Appointments
+    Route::resource('appointments', AppointmentController::class);
 });
 
 Route::get('lang/{locale}', [SettingsController::class, 'setSessionLocale'])->name('lang.switch');

@@ -35,7 +35,7 @@ const submit = () => {
             <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100 p-6">
                     <form @submit.prevent="submit" class="space-y-6">
-                        
+
                         <!-- Session Date -->
                         <div>
                             <InputLabel for="session_date" :value="$t('Session Date')" />
@@ -74,7 +74,7 @@ const submit = () => {
                             <InputError class="mt-2" :message="form.errors.notes" />
                         </div>
 
-                        <div class="flex items-center justify-end gap-4">
+                        <div class="flex items-center justify-end gap-4 border-t border-gray-100 pt-6">
                             <Link :href="route('matters.show', courtCase.matter_id)" class="text-sm text-gray-600 hover:text-gray-900 underline">
                                 {{ $t('Cancel') }}
                             </Link>

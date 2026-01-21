@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('responsible_lawyer_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('parent_id')->nullable()->constrained('matters')->nullOnDelete(); // For appeals/hierarchy
             $table->string('title'); // e.g., "قضية ضد فلان"
-            $table->year('year')->nullable(); 
+            $table->year('year')->nullable();
             $table->string('reference_number')->nullable(); // Internal file number
             $table->string('type')->default('litigation'); // litigation, procedure
             $table->string('status')->default('open'); // open, closed, pending, archived

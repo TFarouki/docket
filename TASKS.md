@@ -43,6 +43,7 @@
     - [x] Refinements & Enhancements
         - [x] Matter: Enhance Case Type selection (Detailed)
         - [x] Matter: Specify Court/Tribunal (Registration location)
+<<<<<<< HEAD
     - [x] User Management (Admin)
         - [x] Roles & Permissions Seeder
         - [x] User CRUD (Controller & Routes)
@@ -53,4 +54,6 @@
     - [x] System Configuration (Root)
         - [x] Dynamic Feature Toggles (SoftDelete, UserTracking)
         - [x] System Settings UI
+=======
+>>>>>>> origin/jule-12265746249537321065
     - [ ] ... (To be defined)

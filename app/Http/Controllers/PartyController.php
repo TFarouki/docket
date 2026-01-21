@@ -20,6 +20,7 @@ class PartyController extends Controller
                             ->orWhere('national_id', 'like', "%{$search}%");
                     });
                 })
+<<<<<<< HEAD
                 ->when(RequestFacade::input('type'), function ($query, $type) {
                     $query->where('type', $type);
                 })
@@ -27,6 +28,12 @@ class PartyController extends Controller
                 ->paginate(10)
                 ->withQueryString(),
             'filters' => RequestFacade::only(['search', 'type']),
+=======
+                ->latest()
+                ->paginate(10)
+                ->withQueryString(),
+            'filters' => RequestFacade::only(['search']),
+>>>>>>> origin/jule-12265746249537321065
         ]);
     }
 
@@ -38,7 +45,11 @@ class PartyController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+<<<<<<< HEAD
             'type' => 'required|in:lead,client',
+=======
+            'type' => 'required|in:client,opponent,other,lead',
+>>>>>>> origin/jule-12265746249537321065
             'full_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
@@ -61,7 +72,11 @@ class PartyController extends Controller
     public function update(Request $request, Party $party)
     {
         $validated = $request->validate([
+<<<<<<< HEAD
             'type' => 'required|in:lead,client',
+=======
+            'type' => 'required|in:client,opponent,other,lead',
+>>>>>>> origin/jule-12265746249537321065
             'full_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',

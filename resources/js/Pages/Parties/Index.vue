@@ -40,6 +40,7 @@ watch([search, type], ([searchValue, typeValue]) => {
                             <option value="">{{ $t('All Types') }}</option>
                             <option value="client">{{ $t('Clients') }}</option>
                             <option value="lead">{{ $t('Leads') }}</option>
+                            <option value="opponent">{{ $t('Opponents') }}</option>
                         </select>
 
                         <TextInput
@@ -73,9 +74,17 @@ watch([search, type], ([searchValue, typeValue]) => {
                             <tbody>
                                 <tr v-for="party in parties.data" :key="party.id" class="bg-white border-b hover:bg-gray-50">
                                     <td class="px-6 py-4">
-                                        <span v-if="party.type === 'client'" class="px-2 py-1 text-xs font-semibold text-green-700 bg-green-100 rounded-full">{{ $t('Client') }}</span>
-                                        <span v-else-if="party.type === 'lead'" class="px-2 py-1 text-xs font-semibold text-yellow-700 bg-yellow-100 rounded-full">{{ $t('Lead') }}</span>
-                                        <span v-else class="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded-full">{{ party.type || 'N/A' }}</span>
+                                        <span
+                                            class="px-2 py-1 text-xs font-semibold rounded-full whitespace-nowrap"
+                                            :class="{
+                                                'bg-green-100 text-green-700': party.type === 'client',
+                                                'bg-red-100 text-red-700': party.type === 'opponent',
+                                                'bg-yellow-100 text-yellow-700': party.type === 'lead',
+                                                'bg-gray-100 text-gray-700': !['client', 'opponent', 'lead'].includes(party.type)
+                                            }"
+                                        >
+                                            {{ $t(party.type) || party.type }}
+                                        </span>
                                     </td>
                                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                         {{ party.full_name }}
