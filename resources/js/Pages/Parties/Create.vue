@@ -9,6 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 const props = defineProps({});
 
 const form = useForm({
+    type: 'lead',
     full_name: '',
     national_id: '',
     phone: '',
@@ -36,7 +37,20 @@ const submit = () => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100 p-6">
                     <form @submit.prevent="submit" class="space-y-6">
                         
-
+                        <!-- Type -->
+                        <div>
+                            <InputLabel for="type" :value="$t('Party Type')" />
+                            <select
+                                id="type"
+                                v-model="form.type"
+                                class="mt-1 block w-full border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-md shadow-sm"
+                                required
+                            >
+                                <option value="lead">{{ $t('Lead / Reference') }}</option>
+                                <option value="client">{{ $t('Client') }}</option>
+                            </select>
+                            <InputError class="mt-2" :message="form.errors.type" />
+                        </div>
 
                         <!-- Full Name -->
                         <div>
