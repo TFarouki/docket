@@ -14,9 +14,11 @@ class PartyController extends Controller
         return Inertia::render('Parties/Index', [
             'parties' => Party::query()
                 ->when(RequestFacade::input('search'), function ($query, $search) {
-                    $query->where('full_name', 'like', "%{$search}%")
-                        ->orWhere('phone', 'like', "%{$search}%")
-                        ->orWhere('national_id', 'like', "%{$search}%");
+                    $query->where(function ($q) use ($search) {
+                        $q->where('full_name', 'like', "%{$search}%")
+                            ->orWhere('phone', 'like', "%{$search}%")
+                            ->orWhere('national_id', 'like', "%{$search}%");
+                    });
                 })
                 ->when(RequestFacade::input('type'), function ($query, $type) {
                     $query->where('type', $type);
