@@ -3,12 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+<<<<<<< HEAD
 use App\Extensions\DynamicFeatures\HasDynamicFeatures;
+=======
+use Illuminate\Database\Eloquent\SoftDeletes;
+>>>>>>> origin/jule-12265746249537321065
 use Illuminate\Database\Eloquent\Model;
 
 class Matter extends Model
 {
+<<<<<<< HEAD
     use HasFactory, HasDynamicFeatures;
+=======
+    use HasFactory, SoftDeletes;
+>>>>>>> origin/jule-12265746249537321065
 
     protected $fillable = [
         'party_id',

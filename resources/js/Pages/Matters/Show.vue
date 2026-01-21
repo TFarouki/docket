@@ -14,7 +14,7 @@ const props = defineProps({
         <template #header>
             <div class="flex items-center justify-between">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ matter.title }}</h2>
-                <span 
+                <span
                     class="px-3 py-1 text-sm rounded-full font-medium"
                     :class="{
                         'bg-green-100 text-green-800': matter.status === 'open',
@@ -76,14 +76,14 @@ const props = defineProps({
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100">
                     <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
                         <h3 class="text-lg font-medium text-gray-900">{{ $t('Court Cases / Procedures') }}</h3>
-                        <Link 
-                            :href="route('court-cases.create', { matter_id: matter.id })" 
+                        <Link
+                            :href="route('court-cases.create', { matter_id: matter.id })"
                             class="text-sm font-medium text-brand-600 hover:text-brand-500"
                         >
                             + {{ $t('Add Court Case') }}
                         </Link>
                     </div>
-                    
+
                     <div v-if="matter.court_cases && matter.court_cases.length > 0">
                         <ul class="divide-y divide-gray-100">
                             <li v-for="courtCase in matter.court_cases" :key="courtCase.id" class="p-6 hover:bg-gray-50 transition block">
@@ -103,8 +103,8 @@ const props = defineProps({
                                             {{ courtCase.current_stage || $t('Ongoing') }}
                                         </span>
                                         <div class="mt-4">
-                                             <Link 
-                                                :href="route('hearings.create', { court_case_id: courtCase.id })" 
+                                             <Link
+                                                :href="route('hearings.create', { court_case_id: courtCase.id })"
                                                 class="text-xs font-medium text-brand-600 hover:text-brand-500 border border-brand-200 rounded px-2 py-1 bg-brand-50 hover:bg-brand-100"
                                             >
                                                 + {{ $t('Add Session') }}
@@ -127,7 +127,7 @@ const props = defineProps({
                                             <tbody class="bg-white divide-y divide-gray-200">
                                                 <tr v-for="hearing in courtCase.hearings" :key="hearing.id">
                                                     <td class="px-4 py-2 text-sm text-gray-900">
-                                                        {{ new Date(hearing.session_date).toLocaleDateString() }} 
+                                                        {{ new Date(hearing.session_date).toLocaleDateString() }}
                                                         <span class="text-gray-400 text-xs ml-1">{{ new Date(hearing.session_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }}</span>
                                                     </td>
                                                     <td class="px-4 py-2 text-sm text-gray-500">{{ hearing.outcome || '-' }}</td>

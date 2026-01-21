@@ -14,8 +14,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // 0. IMPORTANT: Delete all existing roles and permissions to ensure fresh start with user's specific order
-        // We use DB::statement to ignore foreign key constraints or use truncate if possible
+        // 0. IMPORTANT: Delete all existing roles and permissions to ensure fresh start
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('role_has_permissions')->truncate();
         DB::table('model_has_roles')->truncate();
@@ -76,13 +75,17 @@ class RolesAndPermissionsSeeder extends Seeder
         // Manager (مسير المكتب)
         $manager = Role::create(['name' => 'manager']);
         $manager->givePermissionTo([
-            'view parties', 'edit parties', 'view matters', 'view invoices', 'view reports', 'access settings', 'manage users'
+            'view parties', 'edit parties', 
+            'view matters', 
+            'view invoices', 'create invoices', 'edit invoices',
+            'view reports', 'access settings', 'manage users'
         ]);
 
         // Secretary (السكريتاريا)
         $secretary = Role::create(['name' => 'secretary']);
         $secretary->givePermissionTo([
-            'view parties', 'create parties', 'edit parties', 'view appointments', 'create appointments', 'edit appointments'
+            'view parties', 'create parties', 'edit parties', 
+            'view appointments', 'create appointments', 'edit appointments'
         ]);
 
         // Clerk (كاتب المكتب)

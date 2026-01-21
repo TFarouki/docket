@@ -45,18 +45,27 @@ const destroy = () => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100 p-6">
                     <form @submit.prevent="submit" class="space-y-6">
                         
-                        <!-- Type -->
+                        <!-- Type Selection -->
                         <div>
                             <InputLabel for="type" :value="$t('Party Type')" />
-                            <select
-                                id="type"
-                                v-model="form.type"
-                                class="mt-1 block w-full border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-md shadow-sm"
-                                required
-                            >
-                                <option value="lead">{{ $t('Lead / Reference') }}</option>
-                                <option value="client">{{ $t('Client') }}</option>
-                            </select>
+                            <div class="mt-2 flex flex-wrap gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <input type="radio" value="lead" v-model="form.type" class="text-yellow-600 focus:ring-yellow-500 border-gray-300">
+                                    <span class="text-sm font-medium text-gray-700 group-hover:text-yellow-700 transition-colors">{{ $t('Lead') }}</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <input type="radio" value="client" v-model="form.type" class="text-brand-600 focus:ring-brand-500 border-gray-300">
+                                    <span class="text-sm font-medium text-gray-700 group-hover:text-brand-700 transition-colors">{{ $t('Client') }}</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <input type="radio" value="opponent" v-model="form.type" class="text-red-600 focus:ring-red-500 border-gray-300">
+                                    <span class="text-sm font-medium text-gray-700 group-hover:text-red-700 transition-colors">{{ $t('Opponent') }}</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <input type="radio" value="other" v-model="form.type" class="text-gray-600 focus:ring-gray-500 border-gray-300">
+                                    <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors">{{ $t('Other') }}</span>
+                                </label>
+                            </div>
                             <InputError class="mt-2" :message="form.errors.type" />
                         </div>
 
@@ -136,7 +145,7 @@ const destroy = () => {
                             <InputError class="mt-2" :message="form.errors.notes" />
                         </div>
 
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between border-t border-gray-100 pt-6">
                              <DangerButton type="button" @click="destroy" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                                 {{ $t('Delete Party') }}
                             </DangerButton>

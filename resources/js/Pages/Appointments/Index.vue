@@ -5,7 +5,7 @@ import { Head, Link, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 
 const props = defineProps({
-    matters: Object,
+    appointments: Object,
     filters: Object,
 });
 
@@ -13,7 +13,7 @@ const search = ref(props.filters.search || '');
 
 watch(search, (value) => {
     router.get(
-        route('matters.index'),
+        route('appointments.index'),
         { search: value },
         { preserveState: true, replace: true }
     );
@@ -21,16 +21,16 @@ watch(search, (value) => {
 </script>
 
 <template>
-    <Head :title="$t('Matters')" />
+    <Head :title="$t('Appointments')" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Matters') }}</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('Appointments') }}</h2>
         </template>
 
         <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                
+
                 <!-- Actions Bar -->
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex-1 max-w-md">
@@ -38,14 +38,14 @@ watch(search, (value) => {
                             v-model="search"
                             type="search"
                             class="block w-full"
-                            :placeholder="$t('Search by title or reference...')"
+                            :placeholder="$t('Search by title or client...')"
                         />
                     </div>
                     <Link
-                        :href="route('matters.create')"
+                        :href="route('appointments.create')"
                         class="inline-flex items-center px-4 py-2 bg-brand-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-brand-500 active:bg-brand-700 focus:outline-none transition ease-in-out duration-150"
                     >
-                        {{ $t('New Matter') }}
+                        {{ $t('Schedule Appointment') }}
                     </Link>
                 </div>
 
@@ -55,62 +55,54 @@ watch(search, (value) => {
                         <table class="w-full text-sm text-left text-gray-500">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">{{ $t('Reference') }}</th>
                                     <th scope="col" class="px-6 py-3">{{ $t('Title') }}</th>
                                     <th scope="col" class="px-6 py-3">{{ $t('Client') }}</th>
-                                    <th scope="col" class="px-6 py-3">{{ $t('Lawyer') }}</th>
+                                    <th scope="col" class="px-6 py-3">{{ $t('Date & Time') }}</th>
                                     <th scope="col" class="px-6 py-3">{{ $t('Status') }}</th>
                                     <th scope="col" class="px-6 py-3 text-end">{{ $t('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="matter in matters.data" :key="matter.id" class="bg-white border-b hover:bg-gray-50">
-                                    <td class="px-6 py-4 font-mono text-xs text-gray-500">
-                                        {{ matter.reference_number || '-' }}
-                                    </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900">
-                                        {{ matter.title }}
-                                        <div class="text-xs text-gray-400 mt-0.5">{{ $t(matter.type) }}</div>
+                                <tr v-for="appointment in appointments.data" :key="appointment.id" class="bg-white border-b hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                        {{ appointment.title }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <Link v-if="matter.party" :href="route('parties.edit', matter.party.id)" class="text-brand-600 hover:underline">
-                                            {{ matter.party.full_name }}
-                                        </Link>
-                                        <span v-else class="text-gray-400">-</span>
+                                        {{ appointment.party ? appointment.party.full_name : '-' }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ matter.responsible_lawyer?.name || '-' }}
+                                        {{ new Date(appointment.start_time).toLocaleString() }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <span
                                             class="px-2 py-1 text-xs rounded-full"
                                             :class="{
-                                                'bg-green-100 text-green-800': matter.status === 'open',
-                                                'bg-gray-100 text-gray-800': matter.status === 'closed',
-                                                'bg-yellow-100 text-yellow-800': matter.status === 'pending',
-                                                'bg-red-100 text-red-800': matter.status === 'archived'
+                                                'bg-blue-100 text-blue-800': appointment.status === 'scheduled',
+                                                'bg-green-100 text-green-800': appointment.status === 'completed',
+                                                'bg-red-100 text-red-800': appointment.status === 'cancelled',
+                                                'bg-gray-100 text-gray-800': appointment.status === 'no_show'
                                             }"
                                         >
-                                            {{ $t(matter.status) }}
+                                            {{ $t(appointment.status) }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 text-end">
-                                        <Link :href="route('matters.show', matter.id)" class="font-medium text-brand-600 hover:underline">{{ $t('View') }}</Link>
+                                        <Link :href="route('appointments.edit', appointment.id)" class="font-medium text-brand-600 hover:underline">{{ $t('Edit') }}</Link>
                                     </td>
                                 </tr>
-                                <tr v-if="matters.data.length === 0">
-                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
-                                        {{ $t('No matters found.') }}
+                                <tr v-if="appointments.data.length === 0">
+                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                        {{ $t('No appointments found.') }}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                
+
                     <!-- Pagination -->
-                    <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between" v-if="matters.links.length > 3">
-                        <div class="flex gap-1">
-                             <template v-for="(link, key) in matters.links" :key="key">
+                    <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between" v-if="appointments.links.length > 3">
+                         <div class="flex gap-1">
+                             <template v-for="(link, key) in appointments.links" :key="key">
                                 <Link
                                     v-if="link.url"
                                     :href="link.url"
