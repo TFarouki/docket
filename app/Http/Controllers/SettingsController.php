@@ -21,4 +21,12 @@ class SettingsController extends Controller
 
         return back();
     }
+
+    public function setSessionLocale($locale)
+    {
+        if (in_array($locale, ['en', 'ar', 'fr'])) {
+            session(['locale' => $locale]);
+        }
+        return back();
+    }
 }

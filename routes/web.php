@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SystemSettingController;
 use App\Http\Controllers\PartyController;
 use App\Http\Controllers\MatterController;
@@ -14,13 +15,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return redirect()->route('dashboard');
-});
+Route::get('/', [DashboardController::class, 'root']);
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -52,11 +51,6 @@ Route::middleware('auth')->group(function () {
     Route::post('system-settings', [SystemSettingController::class, 'update'])->name('system-settings.update');
 });
 
-Route::get('lang/{locale}', function ($locale) {
-    if (in_array($locale, ['en', 'ar', 'fr'])) {
-        session(['locale' => $locale]);
-    }
-    return back();
-})->name('lang.switch');
+Route::get('lang/{locale}', [SettingsController::class, 'setSessionLocale'])->name('lang.switch');
 
 require __DIR__.'/auth.php';
