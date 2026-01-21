@@ -14,10 +14,12 @@ class MatterController extends Controller
     public function index()
     {
         return Inertia::render('Matters/Index', [
-            'matters' => Matter::with(['party', 'responsibleLawyer'])
+            'matters' => Matter::with(['party:id,full_name', 'responsibleLawyer:id,name'])
                 ->when(RequestFacade::input('search'), function ($query, $search) {
-                    $query->where('title', 'like', "%{$search}%")
-                        ->orWhere('reference_number', 'like', "%{$search}%");
+                    $query->where(function ($q) use ($search) {
+                        $q->where('title', 'like', "%{$search}%")
+                            ->orWhere('reference_number', 'like', "%{$search}%");
+                    });
                 })
                 ->latest()
                 ->paginate(10)
