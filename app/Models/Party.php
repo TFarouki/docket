@@ -24,4 +24,9 @@ class Party extends Model
     {
         return $this->hasMany(Matter::class);
     }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 }
