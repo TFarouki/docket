@@ -9,9 +9,6 @@ const props = defineProps({
 });
 
 const search = ref('');
-
-// In a real app, you'd add server-side search to UserController
-// but for now we just show the basics.
 </script>
 
 <template>
@@ -19,7 +16,7 @@ const search = ref('');
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t('User Management') }}</h2>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{{ $t('User Management') }}</h2>
         </template>
 
         <div class="py-6">
@@ -44,10 +41,10 @@ const search = ref('');
                 </div>
 
                 <!-- Table -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-gray-100 dark:border-gray-700">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-50 dark:bg-gray-700/50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">{{ $t('Name') }}</th>
                                     <th scope="col" class="px-6 py-3">{{ $t('Email') }}</th>
@@ -56,9 +53,12 @@ const search = ref('');
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="user in users.data" :key="user.id" class="bg-white border-b hover:bg-gray-50">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                        {{ user.name }}
+                                <tr v-for="user in users.data" :key="user.id" class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                        <div class="flex items-center gap-3">
+                                            <img :src="user.profile_photo_url" :alt="user.name" class="w-8 h-8 rounded-full object-cover">
+                                            {{ user.name }}
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4">{{ user.email }}</td>
                                     <td class="px-6 py-4">
@@ -66,18 +66,18 @@ const search = ref('');
                                             <span 
                                                 v-for="role in user.roles" 
                                                 :key="role.id"
-                                                class="px-2 py-0.5 text-[10px] bg-brand-50 text-brand-700 rounded-full border border-brand-100 font-medium"
+                                                class="px-2 py-0.5 text-[10px] bg-brand-50 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 rounded-full border border-brand-100 dark:border-brand-800 font-medium"
                                             >
                                                 {{ $t(role.name) }}
                                             </span>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 text-end">
-                                        <Link :href="route('users.edit', user.id)" class="font-medium text-brand-600 hover:underline">{{ $t('Edit') }}</Link>
+                                        <Link :href="route('users.edit', user.id)" class="font-medium text-brand-600 dark:text-brand-400 hover:underline">{{ $t('Edit') }}</Link>
                                     </td>
                                 </tr>
                                 <tr v-if="users.data.length === 0">
-                                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                                    <td colspan="4" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                                         {{ $t('No users found.') }}
                                     </td>
                                 </tr>
@@ -86,17 +86,17 @@ const search = ref('');
                     </div>
                     
                     <!-- Pagination -->
-                    <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between" v-if="users.links.length > 3">
+                    <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between" v-if="users.links.length > 3">
                         <div class="flex gap-1">
                              <template v-for="(link, key) in users.links" :key="key">
                                 <Link
                                     v-if="link.url"
                                     :href="link.url"
-                                    class="px-3 py-1 text-sm border rounded hover:bg-gray-50"
-                                    :class="{ 'bg-brand-50 border-brand-500 text-brand-700': link.active, 'text-gray-600 border-gray-300': !link.active }"
+                                    class="px-3 py-1 text-sm border rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                                    :class="{ 'bg-brand-50 dark:bg-brand-900/40 border-brand-500 dark:border-brand-600 text-brand-700 dark:text-brand-400': link.active, 'text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-600': !link.active }"
                                     v-html="link.label"
                                 />
-                                <span v-else class="px-3 py-1 text-sm text-gray-400 border border-gray-200 rounded" v-html="link.label"></span>
+                                <span v-else class="px-3 py-1 text-sm text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 rounded" v-html="link.label"></span>
                              </template>
                         </div>
                     </div>

@@ -6,19 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Extensions\DynamicFeatures\HasDynamicFeatures;
 
-class Hearing extends Model
+class DocumentCategory extends Model
 {
     use HasFactory, HasDynamicFeatures;
 
     protected $fillable = [
-        'court_case_id',
-        'session_date',
-        'outcome',
-        'notes',
+        'name',
+        'type',
+        'description',
     ];
-
-    public function courtCase()
-    {
-        return $this->belongsTo(CourtCase::class);
-    }
 }

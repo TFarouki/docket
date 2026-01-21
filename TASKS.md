@@ -47,4 +47,10 @@
         - [x] Roles & Permissions Seeder
         - [x] User CRUD (Controller & Routes)
         - [x] User UI (Index, Create, Edit)
+        - [x] Professional File (Documents)
+            - [x] Document Categories (Searchable/Addable)
+            - [x] Document Upload & Management
+    - [x] System Configuration (Root)
+        - [x] Dynamic Feature Toggles (SoftDelete, UserTracking)
+        - [x] System Settings UI
     - [ ] ... (To be defined)
