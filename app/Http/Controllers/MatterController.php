@@ -29,7 +29,7 @@ class MatterController extends Controller
     public function create()
     {
         return Inertia::render('Matters/Create', [
-            'clients' => Party::where('type', 'client')->orderBy('full_name')->get(['id', 'full_name']),
+            'clients' => Party::orderBy('full_name')->get(['id', 'full_name']),
             'lawyers' => User::orderBy('name')->get(['id', 'name']), // Ideally filter by role 'lawyer'/'associate'
         ]);
     }

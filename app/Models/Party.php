@@ -11,7 +11,6 @@ class Party extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'type',
         'full_name',
         'phone',
         'email',

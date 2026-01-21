@@ -31,45 +31,59 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // 2. Define Roles and Assign Permissions
 
-        // Trainee: Basic task execution
-        $trainee = Role::firstOrCreate(['name' => 'trainee']);
-        $trainee->givePermissionTo(['view tasks', 'edit tasks', 'view matters']);
+        // 2. Define Roles and Assign Permissions
 
-        // Clerk (كاتب الإجراءات): Drafting, Documents
-        $clerk = Role::firstOrCreate(['name' => 'clerk']);
-        $clerk->givePermissionTo(['view matters', 'edit matters', 'create documents', 'view tasks', 'edit tasks']);
+        // Super Admin & Admin: Full Access
+        $superAdmin = Role::firstOrCreate(['name' => 'super-admin']);
+        $superAdmin->givePermissionTo(Permission::all());
 
-        // Secretary (الاستقبال): Appointments, Clients
-        $secretary = Role::firstOrCreate(['name' => 'secretary']);
-        $secretary->givePermissionTo([
-            'view parties', 'create parties', 'edit parties',
+        $admin = Role::firstOrCreate(['name' => 'admin']);
+        $admin->givePermissionTo(Permission::all());
+
+        $owner = Role::firstOrCreate(['name' => 'owner']);
+        $owner->givePermissionTo(Permission::all());
+
+        // Partner: Full case management + billing
+        $partner = Role::firstOrCreate(['name' => 'partner']);
+        $partner->givePermissionTo(Permission::all());
+
+        // Employed Lawyer
+        $employedLawyer = Role::firstOrCreate(['name' => 'employed-lawyer']);
+        $employedLawyer->givePermissionTo([
+            'view parties', 'view matters', 'create matters', 'edit matters',
+            'view tasks', 'create tasks', 'edit tasks',
+            'view documents', 'create documents', 'edit documents',
             'view appointments', 'create appointments', 'edit appointments'
         ]);
 
-        // Associate (مداوم): Full case work, but maybe not finance
-        $associate = Role::firstOrCreate(['name' => 'associate']);
-        $associate->givePermissionTo([
-            'view parties', 'create parties', 'edit parties',
-            'view matters', 'create matters', 'edit matters',
-            'view tasks', 'create tasks', 'edit tasks', 'delete tasks',
-            'view documents', 'create documents'
+        // Trainee Lawyer
+        $traineeLawyer = Role::firstOrCreate(['name' => 'trainee-lawyer']);
+        $traineeLawyer->givePermissionTo([
+            'view parties', 'view matters', 'view tasks', 'edit tasks', 'view documents', 'view appointments'
         ]);
 
-        // Manager (مدبر المكتب): Admin + Finance (billing)
+        // Manager
         $manager = Role::firstOrCreate(['name' => 'manager']);
         $manager->givePermissionTo([
-            'view parties', 'edit parties',
-            'view matters',
-            'view invoices', 'create invoices', 'edit invoices',
-            'view reports', 'access settings', 'manage users'
+            'view parties', 'edit parties', 'view matters', 'view invoices', 'view reports', 'access settings', 'manage users'
         ]);
 
-        // Partner (شريك): Like Associate + Profit View
-        $partner = Role::firstOrCreate(['name' => 'partner']);
-        $partner->givePermissionTo(Permission::all()); // Or specific subset
+        // Secretary
+        $secretary = Role::firstOrCreate(['name' => 'secretary']);
+        $secretary->givePermissionTo([
+            'view parties', 'create parties', 'edit parties', 'view appointments', 'create appointments', 'edit appointments'
+        ]);
 
-        // Owner: Everything
-        $owner = Role::firstOrCreate(['name' => 'owner']);
-        $owner->givePermissionTo(Permission::all());
+        // Clerk
+        $clerk = Role::firstOrCreate(['name' => 'clerk']);
+        $clerk->givePermissionTo(['view matters', 'edit matters', 'create documents', 'view tasks', 'edit tasks']);
+
+        // Runner
+        $runner = Role::firstOrCreate(['name' => 'runner']);
+        $runner->givePermissionTo(['view tasks', 'edit tasks']);
+
+        // Trainee Employee
+        $traineeEmployee = Role::firstOrCreate(['name' => 'trainee-employee']);
+        $traineeEmployee->givePermissionTo(['view tasks']);
     }
 }

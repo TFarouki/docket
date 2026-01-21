@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('matters', \App\Http\Controllers\MatterController::class);
     Route::resource('court-cases', \App\Http\Controllers\CourtCaseController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
     Route::resource('hearings', \App\Http\Controllers\HearingController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+
+    // Admin: User Management
+    Route::resource('users', \App\Http\Controllers\UserController::class);
 });
 
 
