@@ -13,6 +13,10 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('create documents')) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'document_category_id' => 'required|exists:document_categories,id',
@@ -45,6 +49,10 @@ class DocumentController extends Controller
      */
     public function destroy(Document $document)
     {
+        if (!auth()->user()->can('delete documents')) {
+            abort(403);
+        }
+
         Storage::disk('public')->delete($document->file_path);
         $document->delete();
 
@@ -56,6 +64,10 @@ class DocumentController extends Controller
      */
     public function download(Document $document)
     {
+        if (!auth()->user()->can('view documents')) {
+            abort(403);
+        }
+
         return Storage::disk('public')->download($document->file_path, $document->title . '.' . $document->file_type);
     }
 }
