@@ -29,7 +29,7 @@ class MatterController extends Controller
     public function create()
     {
         return Inertia::render('Matters/Create', [
-            'clients' => Party::orderBy('full_name')->get(['id', 'full_name']),
+            'clients' => Party::orderBy('full_name')->get(['id', 'full_name', 'type']),
             'lawyers' => User::orderBy('name')->get(['id', 'name']), // Ideally filter by role 'lawyer'/'associate'
         ]);
     }
@@ -51,6 +51,12 @@ class MatterController extends Controller
         ]);
 
         Matter::create($validated);
+
+        // Auto-convert 'lead' to 'client'
+        $party = Party::find($validated['party_id']);
+        if ($party && $party->type === 'lead') {
+            $party->update(['type' => 'client']);
+        }
 
         return redirect()->route('matters.index')->with('success', 'Matter created successfully.');
     }

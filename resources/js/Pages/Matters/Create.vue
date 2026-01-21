@@ -95,7 +95,7 @@ const submit = () => {
                                 >
                                     <option value="" disabled>{{ $t('Select Client') }}</option>
                                     <option v-for="client in clients" :key="client.id" :value="client.id">
-                                        {{ client.full_name }}
+                                        {{ client.full_name }} {{ client.type ? '(' + (client.type === 'lead' ? $t('Lead') : $t('Client')) + ')' : '' }}
                                     </option>
                                 </select>
                                 <InputError class="mt-2" :message="form.errors.party_id" />
