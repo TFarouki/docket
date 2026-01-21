@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('parties', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->default('lead'); // lead, client
+            $table->string('type')->default('client'); // client, opponent, other
             $table->string('full_name');
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->string('national_id')->nullable();
+            $table->string('national_id')->nullable(); // CIN / RC
             $table->text('address')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('parties');
     }
 };

@@ -1,6 +1,29 @@
 # Implementation Plan - Law Firm Management System (Docket)
 
-## 1. Client Journey & Domain Logic
+## 1. Modular Architecture & Plugin System
+
+The system will follow a **Litigation-First** approach. The value proposition is managing court cases immediately.
+
+### A. Core Module (The "Base" Product)
+Essential tools to manage files/cases (صلب عمل المحامي):
+*   **Case Management (Litigation)**: Creating files, adding parties (Clients/Opponents), case numbers, court details.
+*   **Session Management (hearings)**: Tracking session dates and outcomes.
+*   **Basic Financials**: Logging simple fees and expenses *per case*.
+*   **Basic Parties**: Storing Name/Phone of clients/opponents just to link them to cases.
+
+### B. Premium Modules (Plugins/Add-ons)
+Additional value layers activated by subscription:
+*   **`CRM` Module**: Advanced Client profiles, Appointment history, Leads/References flow, Marketing.
+*   **`FinancePro` Module**: Global invoicing, Tax reports, Office-wide profit/loss, Client balance tracking (Debit/Credit).
+*   **`TaskForce` Module**: Office-wide task management not directly linked to a court date (e.g., "Renew Internet Subscription").
+*   **`Procedures` Module**: Non-litigation files (Consultations, Contracts).
+*   **`DigitalArchive` Module**: Advanced document management.
+
+### C. Implementation Strategy
+*   We will start by building the **Core** (Cases/Sessions).
+*   `Parties` will be a simple table in Core. The `CRM` module will extend its functionality.
+
+## 2. Client Journey & Domain Logic
 
 ### A. The "Reference" (المراجع) to "Client" (الموكل) Flow
 1.  **Entry Point**: A new person is added as a "Reference" (Visitor/Lead).
