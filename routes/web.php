@@ -6,12 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect()->route('dashboard');
 });
 
 Route::get('/dashboard', function () {
@@ -24,7 +19,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/settings/locale', [\App\Http\Controllers\SettingsController::class, 'updateLocale'])->name('settings.updateLocale');
 
-    Route::resource('clients', \App\Http\Controllers\ClientController::class);
+    // Core: Party Management
+    Route::resource('parties', \App\Http\Controllers\PartyController::class);
+
+    // Core: Matter Management (Litigation)
+    Route::resource('matters', \App\Http\Controllers\MatterController::class);
+    Route::resource('court-cases', \App\Http\Controllers\CourtCaseController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+    Route::resource('hearings', \App\Http\Controllers\HearingController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
 });
 
 

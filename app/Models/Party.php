@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class Party extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -19,4 +19,9 @@ class Client extends Model
         'address',
         'notes',
     ];
+
+    public function matters()
+    {
+        return $this->hasMany(Matter::class);
+    }
 }

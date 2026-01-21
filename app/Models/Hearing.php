@@ -2,9 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Hearing extends Model
 {
-    //
+    use HasFactory;
+
+    protected $fillable = [
+        'court_case_id',
+        'session_date',
+        'outcome',
+        'notes',
+    ];
+
+    public function courtCase()
+    {
+        return $this->belongsTo(CourtCase::class);
+    }
 }

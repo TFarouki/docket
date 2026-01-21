@@ -15,7 +15,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // 1. Define Permissions
         $permissions = [
-            'view clients', 'create clients', 'edit clients', 'delete clients',
+            'view parties', 'create parties', 'edit parties', 'delete parties',
             'view matters', 'create matters', 'edit matters', 'delete matters',
             'view tasks', 'create tasks', 'edit tasks', 'delete tasks',
             'view invoices', 'create invoices', 'edit invoices', 'delete invoices',
@@ -42,14 +42,14 @@ class RolesAndPermissionsSeeder extends Seeder
         // Secretary (الاستقبال): Appointments, Clients
         $secretary = Role::firstOrCreate(['name' => 'secretary']);
         $secretary->givePermissionTo([
-            'view clients', 'create clients', 'edit clients',
+            'view parties', 'create parties', 'edit parties',
             'view appointments', 'create appointments', 'edit appointments'
         ]);
 
         // Associate (مداوم): Full case work, but maybe not finance
         $associate = Role::firstOrCreate(['name' => 'associate']);
         $associate->givePermissionTo([
-            'view clients', 'create clients', 'edit clients',
+            'view parties', 'create parties', 'edit parties',
             'view matters', 'create matters', 'edit matters',
             'view tasks', 'create tasks', 'edit tasks', 'delete tasks',
             'view documents', 'create documents'
@@ -58,7 +58,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // Manager (مدبر المكتب): Admin + Finance (billing)
         $manager = Role::firstOrCreate(['name' => 'manager']);
         $manager->givePermissionTo([
-            'view clients', 'edit clients',
+            'view parties', 'edit parties',
             'view matters',
             'view invoices', 'create invoices', 'edit invoices',
             'view reports', 'access settings', 'manage users'

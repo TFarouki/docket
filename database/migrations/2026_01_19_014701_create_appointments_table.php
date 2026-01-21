@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->nullable()->constrained()->nullOnDelete(); // Can be null if it's a new lead not in DB yet? No, we add "Lead" to clients
+            $table->foreignId('party_id')->nullable()->constrained('parties')->nullOnDelete(); // Reference linked to Party
             $table->foreignId('matter_id')->nullable()->constrained()->nullOnDelete(); // Optional, if related to specific file
             $table->foreignId('assigned_to')->nullable()->constrained('users')->nullOnDelete();
             $table->string('title'); // "Meeting with X"

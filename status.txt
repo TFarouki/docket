@@ -1,0 +1,112 @@
+On branch jule
+All conflicts fixed but you are still merging.
+  (use "git commit" to conclude merge)
+
+Changes to be committed:
+	modified:   IMPLEMENTATION.md
+	modified:   TASKS.md
+	new file:   app/Http/Controllers/CourtCaseController.php
+	new file:   app/Http/Controllers/HearingController.php
+	new file:   app/Http/Controllers/MatterController.php
+	new file:   app/Http/Controllers/PartyController.php
+	modified:   app/Models/CourtCase.php
+	modified:   app/Models/Hearing.php
+	modified:   app/Models/Matter.php
+	new file:   app/Models/Party.php
+	renamed:    app/Models/Client.php -> app/Models/Session.php
+	modified:   composer.json
+	modified:   composer.lock
+	new file:   config/modules.php
+	renamed:    database/migrations/2026_01_19_014658_create_clients_table.php -> database/migrations/2026_01_19_014600_create_parties_table.php
+	modified:   database/migrations/2026_01_19_014659_create_matters_table.php
+	modified:   database/migrations/2026_01_19_014701_create_appointments_table.php
+	new file:   database/migrations/2026_01_21_013815_add_case_details_to_matters_table.php
+	modified:   database/seeders/RolesAndPermissionsSeeder.php
+	modified:   lang/ar.json
+	modified:   lang/en.json
+	modified:   lang/fr.json
+	modified:   resources/js/Layouts/AuthenticatedLayout.vue
+	new file:   resources/js/Pages/CourtCases/Create.vue
+	new file:   resources/js/Pages/Hearings/Create.vue
+	new file:   resources/js/Pages/Matters/Create.vue
+	new file:   resources/js/Pages/Matters/Index.vue
+	new file:   resources/js/Pages/Matters/Show.vue
+	new file:   resources/js/Pages/Parties/Create.vue
+	new file:   resources/js/Pages/Parties/Edit.vue
+	new file:   resources/js/Pages/Parties/Index.vue
+	modified:   routes/web.php
+	new file:   stubs/nwidart-stubs/action-invoke.stub
+	new file:   stubs/nwidart-stubs/action.stub
+	new file:   stubs/nwidart-stubs/assets/js/app.stub
+	new file:   stubs/nwidart-stubs/assets/sass/app.stub
+	new file:   stubs/nwidart-stubs/cast.stub
+	new file:   stubs/nwidart-stubs/channel.stub
+	new file:   stubs/nwidart-stubs/class-invoke.stub
+	new file:   stubs/nwidart-stubs/class.stub
+	new file:   stubs/nwidart-stubs/command.stub
+	new file:   stubs/nwidart-stubs/component-class.stub
+	new file:   stubs/nwidart-stubs/component-view.stub
+	new file:   stubs/nwidart-stubs/composer.stub
+	new file:   stubs/nwidart-stubs/controller-api.stub
+	new file:   stubs/nwidart-stubs/controller-plain.stub
+	new file:   stubs/nwidart-stubs/controller.invokable.stub
+	new file:   stubs/nwidart-stubs/controller.stub
+	new file:   stubs/nwidart-stubs/enum.stub
+	new file:   stubs/nwidart-stubs/event-provider.stub
+	new file:   stubs/nwidart-stubs/event.stub
+	new file:   stubs/nwidart-stubs/exception-render-report.stub
+	new file:   stubs/nwidart-stubs/exception-render.stub
+	new file:   stubs/nwidart-stubs/exception-report.stub
+	new file:   stubs/nwidart-stubs/exception.stub
+	new file:   stubs/nwidart-stubs/factory.stub
+	new file:   stubs/nwidart-stubs/helper-invoke.stub
+	new file:   stubs/nwidart-stubs/helper.stub
+	new file:   stubs/nwidart-stubs/interface.stub
+	new file:   stubs/nwidart-stubs/job-queued.stub
+	new file:   stubs/nwidart-stubs/job.stub
+	new file:   stubs/nwidart-stubs/json.stub
+	new file:   stubs/nwidart-stubs/listener-duck.stub
+	new file:   stubs/nwidart-stubs/listener-queued-duck.stub
+	new file:   stubs/nwidart-stubs/listener-queued.stub
+	new file:   stubs/nwidart-stubs/listener.stub
+	new file:   stubs/nwidart-stubs/mail.stub
+	new file:   stubs/nwidart-stubs/middleware.stub
+	new file:   stubs/nwidart-stubs/migration/add.stub
+	new file:   stubs/nwidart-stubs/migration/create.stub
+	new file:   stubs/nwidart-stubs/migration/delete.stub
+	new file:   stubs/nwidart-stubs/migration/drop.stub
+	new file:   stubs/nwidart-stubs/migration/plain.stub
+	new file:   stubs/nwidart-stubs/model.stub
+	new file:   stubs/nwidart-stubs/notification.stub
+	new file:   stubs/nwidart-stubs/observer.stub
+	new file:   stubs/nwidart-stubs/package.stub
+	new file:   stubs/nwidart-stubs/policy.plain.stub
+	new file:   stubs/nwidart-stubs/provider.stub
+	new file:   stubs/nwidart-stubs/repository-invoke.stub
+	new file:   stubs/nwidart-stubs/repository.stub
+	new file:   stubs/nwidart-stubs/request.stub
+	new file:   stubs/nwidart-stubs/resource-collection.stub
+	new file:   stubs/nwidart-stubs/resource.stub
+	new file:   stubs/nwidart-stubs/route-provider.stub
+	new file:   stubs/nwidart-stubs/routes/api.stub
+	new file:   stubs/nwidart-stubs/routes/web.stub
+	new file:   stubs/nwidart-stubs/rule.implicit.stub
+	new file:   stubs/nwidart-stubs/rule.stub
+	new file:   stubs/nwidart-stubs/scaffold/config.stub
+	new file:   stubs/nwidart-stubs/scaffold/provider.stub
+	new file:   stubs/nwidart-stubs/scope.stub
+	new file:   stubs/nwidart-stubs/seeder.stub
+	new file:   stubs/nwidart-stubs/service-invoke.stub
+	new file:   stubs/nwidart-stubs/service.stub
+	new file:   stubs/nwidart-stubs/tests/feature.stub
+	new file:   stubs/nwidart-stubs/tests/unit.stub
+	new file:   stubs/nwidart-stubs/trait.stub
+	new file:   stubs/nwidart-stubs/view.stub
+	new file:   stubs/nwidart-stubs/views/index.stub
+	new file:   stubs/nwidart-stubs/views/master.stub
+	new file:   stubs/nwidart-stubs/vite.stub
+	new file:   vite-module-loader.js
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	status.txt

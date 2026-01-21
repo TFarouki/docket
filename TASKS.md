@@ -30,6 +30,17 @@
         - [x] Hostinger-style AppBar (Centered Logo, Collapsible Sidebar)
         - [x] Multi-language Support (AR/EN/FR)
         - [x] Global Language Setting (Admin Profile)
-    - [/] Client Management Module
-    - [ ] Case Management Module
+    - [x] Party Management (Core)
+        - [x] DB Migration (Parties)
+        - [x] CRUD Controller & Routes
+        - [x] UI: List, Create, Edit
+    - [x] Litigation/Case Management (Core)
+        - [x] DB Migrations (Matters, CourtCases, Hearings)
+        - [x] Create Matter Form (Basic Info)
+        - [x] Link Parties to Matters
+        - [x] Court Case Details (The procedural part)
+        - [x] Hearings Management (Sessions)
+    - [x] Refinements & Enhancements
+        - [x] Matter: Enhance Case Type selection (Detailed)
+        - [x] Matter: Specify Court/Tribunal (Registration location)
     - [ ] ... (To be defined)
