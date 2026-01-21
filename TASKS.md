@@ -12,8 +12,8 @@
             - [ ] Payment Status (Partial, Full, Deferred)
             - [ ] Reimbursements (Paid by Firm)
             - [ ] Profitability Reports per Case
-    - [ ] Define User Roles & Permissions (Flexible System)
-        - [ ] Roles: Owner, Partner, Associate, Trainee, Manager, Secretary, Clerk, Runner.
+    - [x] Define User Roles & Permissions (Flexible System)
+        - [ ] Roles: Super Admin, Admin, Owner, Partner, Employed Lawyer, Trainee Lawyer, Manager, Secretary, Clerk, Runner, Trainee Employee.
         - [ ] Capability to assign multiple roles to one user.
     - [ ] Task & Appointment Management Details
         - [ ] Calendar View for Appointments.
@@ -30,6 +30,27 @@
         - [x] Hostinger-style AppBar (Centered Logo, Collapsible Sidebar)
         - [x] Multi-language Support (AR/EN/FR)
         - [x] Global Language Setting (Admin Profile)
-    - [/] Client Management Module
-    - [ ] Case Management Module
+    - [x] Party Management (Core)
+        - [x] DB Migration (Parties)
+        - [x] CRUD Controller & Routes
+        - [x] UI: List, Create, Edit
+    - [x] Litigation/Case Management (Core)
+        - [x] DB Migrations (Matters, CourtCases, Hearings)
+        - [x] Create Matter Form (Basic Info)
+        - [x] Link Parties to Matters
+        - [x] Court Case Details (The procedural part)
+        - [x] Hearings Management (Sessions)
+    - [x] Refinements & Enhancements
+        - [x] Matter: Enhance Case Type selection (Detailed)
+        - [x] Matter: Specify Court/Tribunal (Registration location)
+    - [x] User Management (Admin)
+        - [x] Roles & Permissions Seeder
+        - [x] User CRUD (Controller & Routes)
+        - [x] User UI (Index, Create, Edit)
+        - [x] Professional File (Documents)
+            - [x] Document Categories (Searchable/Addable)
+            - [x] Document Upload & Management
+    - [x] System Configuration (Root)
+        - [x] Dynamic Feature Toggles (SoftDelete, UserTracking)
+        - [x] System Settings UI
     - [ ] ... (To be defined)

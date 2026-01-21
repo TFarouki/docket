@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -13,9 +14,19 @@ class RolesAndPermissionsSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
+        // 0. IMPORTANT: Delete all existing roles and permissions to ensure fresh start with user's specific order
+        // We use DB::statement to ignore foreign key constraints or use truncate if possible
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('role_has_permissions')->truncate();
+        DB::table('model_has_roles')->truncate();
+        DB::table('model_has_permissions')->truncate();
+        DB::table('roles')->truncate();
+        DB::table('permissions')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         // 1. Define Permissions
         $permissions = [
-            'view clients', 'create clients', 'edit clients', 'delete clients',
+            'view parties', 'create parties', 'edit parties', 'delete parties',
             'view matters', 'create matters', 'edit matters', 'delete matters',
             'view tasks', 'create tasks', 'edit tasks', 'delete tasks',
             'view invoices', 'create invoices', 'edit invoices', 'delete invoices',
@@ -26,50 +37,64 @@ class RolesAndPermissionsSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+            Permission::create(['name' => $permission]);
         }
 
-        // 2. Define Roles and Assign Permissions
+        // 2. Define Roles and Assign Permissions in SPECIFIC ORDER
+        
+        // Root: Hidden Role, Full Access
+        $root = Role::create(['name' => 'root']);
+        $root->givePermissionTo(Permission::all());
 
-        // Trainee: Basic task execution
-        $trainee = Role::firstOrCreate(['name' => 'trainee']);
-        $trainee->givePermissionTo(['view tasks', 'edit tasks', 'view matters']);
+        // Admin: System Admin (مدبر النظام)
+        $admin = Role::create(['name' => 'admin']);
+        $admin->givePermissionTo(Permission::all());
 
-        // Clerk (كاتب الإجراءات): Drafting, Documents
-        $clerk = Role::firstOrCreate(['name' => 'clerk']);
-        $clerk->givePermissionTo(['view matters', 'edit matters', 'create documents', 'view tasks', 'edit tasks']);
+        // Owner: General Manager (المدير العام)
+        $owner = Role::create(['name' => 'owner']);
+        $owner->givePermissionTo(Permission::all());
 
-        // Secretary (الاستقبال): Appointments, Clients
-        $secretary = Role::firstOrCreate(['name' => 'secretary']);
-        $secretary->givePermissionTo([
-            'view clients', 'create clients', 'edit clients',
+        // Partner: Colleague Lawyer (محامي زميل بالمكتب)
+        $partner = Role::create(['name' => 'partner']);
+        $partner->givePermissionTo(Permission::all());
+
+        // Employed Lawyer (محامي مستخدم)
+        $employedLawyer = Role::create(['name' => 'employed-lawyer']);
+        $employedLawyer->givePermissionTo([
+            'view parties', 'view matters', 'create matters', 'edit matters',
+            'view tasks', 'create tasks', 'edit tasks',
+            'view documents', 'create documents', 'edit documents',
             'view appointments', 'create appointments', 'edit appointments'
         ]);
 
-        // Associate (مداوم): Full case work, but maybe not finance
-        $associate = Role::firstOrCreate(['name' => 'associate']);
-        $associate->givePermissionTo([
-            'view clients', 'create clients', 'edit clients',
-            'view matters', 'create matters', 'edit matters',
-            'view tasks', 'create tasks', 'edit tasks', 'delete tasks',
-            'view documents', 'create documents'
+        // Trainee Lawyer (محامي متدرب)
+        $traineeLawyer = Role::create(['name' => 'trainee-lawyer']);
+        $traineeLawyer->givePermissionTo([
+            'view parties', 'view matters', 'view tasks', 'edit tasks', 'view documents', 'view appointments'
         ]);
 
-        // Manager (مدبر المكتب): Admin + Finance (billing)
-        $manager = Role::firstOrCreate(['name' => 'manager']);
+        // Manager (مسير المكتب)
+        $manager = Role::create(['name' => 'manager']);
         $manager->givePermissionTo([
-            'view clients', 'edit clients',
-            'view matters',
-            'view invoices', 'create invoices', 'edit invoices',
-            'view reports', 'access settings', 'manage users'
+            'view parties', 'edit parties', 'view matters', 'view invoices', 'view reports', 'access settings', 'manage users'
         ]);
 
-        // Partner (شريك): Like Associate + Profit View
-        $partner = Role::firstOrCreate(['name' => 'partner']);
-        $partner->givePermissionTo(Permission::all()); // Or specific subset
+        // Secretary (السكريتاريا)
+        $secretary = Role::create(['name' => 'secretary']);
+        $secretary->givePermissionTo([
+            'view parties', 'create parties', 'edit parties', 'view appointments', 'create appointments', 'edit appointments'
+        ]);
 
-        // Owner: Everything
-        $owner = Role::firstOrCreate(['name' => 'owner']);
-        $owner->givePermissionTo(Permission::all());
+        // Clerk (كاتب المكتب)
+        $clerk = Role::create(['name' => 'clerk']);
+        $clerk->givePermissionTo(['view matters', 'edit matters', 'create documents', 'view tasks', 'edit tasks']);
+
+        // Runner (كاتب الاجراءات)
+        $runner = Role::create(['name' => 'runner']);
+        $runner->givePermissionTo(['view tasks', 'edit tasks']);
+
+        // Trainee Employee (كاتب متدرب)
+        $traineeEmployee = Role::create(['name' => 'trainee-employee']);
+        $traineeEmployee->givePermissionTo(['view tasks']);
     }
 }
