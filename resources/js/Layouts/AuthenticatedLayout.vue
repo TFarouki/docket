@@ -1,5 +1,5 @@
 <script setup>
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import AppLogo from '@/Components/AppLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import { useTheme } from '@/Services/ThemeService';
@@ -30,14 +30,8 @@ const toggleSidebar = () => {
 
             <!-- Unit 2: Centered Branding -->
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <Link :href="route('dashboard')" class="flex items-center pointer-events-auto">
-                    <!-- Icon Container with Cutout Effect -->
-                    <div class="relative flex items-center justify-center h-10 w-10">
-                        <ApplicationLogo class="block h-full w-full" />
-                        <span class="absolute inset-0 flex items-center justify-center font-black text-2xl text-white dark:text-gray-800 pb-1.5 pr-0.5 select-none font-sans">D</span>
-                    </div>
-                    <!-- Remaining Text -->
-                    <span class="text-xl font-bold text-brand-700 dark:text-brand-400 tracking-wide -ml-3">ocket</span>
+                <Link :href="route('dashboard')" class="pointer-events-auto">
+                    <AppLogo size="md" />
                 </Link>
             </div>
 

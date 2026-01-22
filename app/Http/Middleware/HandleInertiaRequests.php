@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => fn () => $request->user()
                     ? array_merge(
                         // Limit the user attributes (Security Fix)
-                        $request->user()->only('id', 'name', 'email'),
+                        $request->user()->only('id', 'name', 'email', 'profile_photo_url'),
                         // Include the roles (Main Feature)
                         ['roles' => $request->user()->load('roles')->roles] 
                     )
