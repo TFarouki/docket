@@ -11,3 +11,8 @@ Instead of:
 ```php
 $query->where('a', 1)->orWhere('b', 1);
 ```
+
+## 2026-01-23 - Global Appends Overhead
+**Learning:** Models with global `$appends` (like `User::$appends = ['profile_photo_url']`) trigger accessor logic on *every* serialization, even for simple ID/Name dropdowns. This adds unnecessary computation and payload size.
+
+**Action:** Use `->makeHidden(['attribute'])` on the collection or model when fetching lists where the appended attribute is unused.
