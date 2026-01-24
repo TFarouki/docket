@@ -11,3 +11,11 @@ Instead of:
 ```php
 $query->where('a', 1)->orWhere('b', 1);
 ```
+
+## 2026-01-24 - Hidden Appends for Dropdowns
+**Learning:** Models with `$appends` (like `User`'s `profile_photo_url`) force accessor execution and payload inclusion even when selecting specific columns (e.g., `get(['id', 'name'])`). This bloats JSON responses for simple dropdowns.
+
+**Action:** Use `->makeHidden(['attribute'])` on the collection when fetching lists for dropdowns to exclude unneeded appended attributes:
+```php
+User::get(['id', 'name'])->makeHidden(['profile_photo_url'])
+```
