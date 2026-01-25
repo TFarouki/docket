@@ -13,6 +13,8 @@ class MatterController extends Controller
 {
     public function index()
     {
+        abort_unless(auth()->user()->can('view matters'), 403);
+
         return Inertia::render('Matters/Index', [
             'matters' => Matter::with(['party:id,full_name', 'responsibleLawyer:id,name'])
                 ->when(RequestFacade::input('search'), function ($query, $search) {
@@ -30,6 +32,8 @@ class MatterController extends Controller
 
     public function create()
     {
+        abort_unless(auth()->user()->can('create matters'), 403);
+
         return Inertia::render('Matters/Create', [
             'clients' => Party::orderBy('full_name')->get(['id', 'full_name', 'type']),
             'lawyers' => User::orderBy('name')->get(['id', 'name']), // Ideally filter by role 'lawyer'/'associate'
@@ -38,6 +42,8 @@ class MatterController extends Controller
 
     public function store(Request $request)
     {
+        abort_unless(auth()->user()->can('create matters'), 403);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'party_id' => 'required|exists:parties,id',
@@ -64,6 +70,8 @@ class MatterController extends Controller
     }
     public function show(Matter $matter)
     {
+        abort_unless(auth()->user()->can('view matters'), 403);
+
         $matter->load(['party', 'responsibleLawyer', 'courtCases.hearings']); // Eager load relationships
 
         return Inertia::render('Matters/Show', [
