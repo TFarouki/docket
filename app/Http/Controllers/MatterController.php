@@ -32,7 +32,7 @@ class MatterController extends Controller
     {
         return Inertia::render('Matters/Create', [
             'clients' => Party::orderBy('full_name')->get(['id', 'full_name', 'type']),
-            'lawyers' => User::orderBy('name')->get(['id', 'name']), // Ideally filter by role 'lawyer'/'associate'
+            'lawyers' => User::orderBy('name')->get(['id', 'name'])->makeHidden(['profile_photo_url']), // Optimize: Remove expensive appended attribute. Ideally filter by role 'lawyer'/'associate'
         ]);
     }
 
