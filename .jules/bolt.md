@@ -11,3 +11,8 @@ Instead of:
 ```php
 $query->where('a', 1)->orWhere('b', 1);
 ```
+
+## 2026-02-05 - Hidden Attributes in Collections
+**Learning:** When a model has attributes in `$appends`, `get(['id', 'name'])` is NOT sufficient to exclude them from serialization. The computed attributes are still appended to every model instance in the collection, causing performance overhead (especially if they involve logic like `asset()` or `urlencode()`) and increasing payload size.
+
+**Action:** Use `->makeHidden(['attribute_name'])` on the collection or query result to explicitly exclude appended attributes when they are not needed (e.g., for dropdowns).
