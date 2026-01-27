@@ -146,7 +146,7 @@ const destroy = () => {
                         </div>
 
                         <div class="flex items-center justify-between border-t border-gray-100 pt-6">
-                             <DangerButton type="button" @click="destroy" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                             <DangerButton type="button" @click="destroy" :loading="form.processing">
                                 {{ $t('Delete Party') }}
                             </DangerButton>
 
