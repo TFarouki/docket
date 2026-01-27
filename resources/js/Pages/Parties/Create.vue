@@ -143,7 +143,7 @@ const submit = () => {
                                 {{ $t('Cancel') }}
                             </Link>
 
-                            <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                            <PrimaryButton :loading="form.processing">
                                 {{ $t('Save Party') }}
                             </PrimaryButton>
                         </div>
