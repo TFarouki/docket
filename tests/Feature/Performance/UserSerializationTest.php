@@ -11,39 +11,39 @@ class UserSerializationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_appointments_create_excludes_profile_photo_url_in_users_list()
+    public function test_user_dropdowns_do_not_contain_profile_photo_url()
     {
         $user = User::factory()->create();
-        User::factory()->count(5)->create();
 
+        // Create some users to populate the dropdown
+        User::factory()->count(3)->create();
+
+        // Appointments Create
         $response = $this->actingAs($user)->get(route('appointments.create'));
-
         $response->assertStatus(200);
 
         $response->assertInertia(fn (Assert $page) => $page
             ->component('Appointments/Create')
-            ->has('users', 6)
+            ->has('users', 4) // The creating user + 3 others
             ->has('users.0', fn (Assert $json) => $json
-                ->missing('profile_photo_url') // Assert it MISSING
+                ->has('id')
+                ->has('name')
+                ->missing('profile_photo_url')
                 ->etc()
             )
         );
-    }
 
-    public function test_matters_create_excludes_profile_photo_url_in_lawyers_list()
-    {
-        $user = User::factory()->create();
-        User::factory()->count(5)->create();
-
+        // Matters Create
         $response = $this->actingAs($user)->get(route('matters.create'));
-
         $response->assertStatus(200);
 
         $response->assertInertia(fn (Assert $page) => $page
             ->component('Matters/Create')
-            ->has('lawyers', 6)
+            ->has('lawyers', 4)
             ->has('lawyers.0', fn (Assert $json) => $json
-                ->missing('profile_photo_url') // Assert it MISSING
+                ->has('id')
+                ->has('name')
+                ->missing('profile_photo_url')
                 ->etc()
             )
         );

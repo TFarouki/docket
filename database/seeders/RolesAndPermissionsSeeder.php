@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -15,13 +16,13 @@ class RolesAndPermissionsSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // 0. IMPORTANT: Delete all existing roles and permissions to ensure fresh start
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Schema::disableForeignKeyConstraints();
         DB::table('role_has_permissions')->truncate();
         DB::table('model_has_roles')->truncate();
         DB::table('model_has_permissions')->truncate();
         DB::table('roles')->truncate();
         DB::table('permissions')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Schema::enableForeignKeyConstraints();
 
         // 1. Define Permissions
         $permissions = [
