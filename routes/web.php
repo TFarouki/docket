@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('hearings', HearingController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
 
     // Admin: User Management
-    Route::resource('users', UserController::class)->middleware(['can:manage users']);
+    Route::resource('users', UserController::class)->middleware('can:manage users');
 
     // Document Management
     Route::post('documents', [DocumentController::class, 'store'])->name('documents.store');

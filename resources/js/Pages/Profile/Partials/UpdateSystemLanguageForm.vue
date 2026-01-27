@@ -48,7 +48,7 @@ const updateSystemLocale = () => {
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">{{ $t('Save') }}</PrimaryButton>
+                <PrimaryButton :loading="form.processing">{{ $t('Save') }}</PrimaryButton>
 
                 <Transition
                     enter-active-class="transition ease-in-out"
