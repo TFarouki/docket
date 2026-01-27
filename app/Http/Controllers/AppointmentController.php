@@ -6,8 +6,8 @@ use App\Models\Appointment;
 use App\Models\Party;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Request as RequestFacade;
+use Inertia\Inertia;
 
 class AppointmentController extends Controller
 {
@@ -15,7 +15,7 @@ class AppointmentController extends Controller
     {
         return Inertia::render('Appointments/Index', [
             'appointments' => Appointment::query()
-                ->with(['party', 'assignee'])
+                ->with(['party:id,full_name', 'assignee:id,name'])
                 ->when(RequestFacade::input('search'), function ($query, $search) {
                     $query->where('title', 'like', "%{$search}%")
                         ->orWhereHas('party', function ($q) use ($search) {
@@ -33,7 +33,7 @@ class AppointmentController extends Controller
     {
         return Inertia::render('Appointments/Create', [
             'parties' => Party::orderBy('full_name')->get(['id', 'full_name']),
-            'users' => User::orderBy('name')->get(['id', 'name']),
+            'users' => User::orderBy('name')->get(['id', 'name'])->makeHidden(['profile_photo_url']),
         ]);
     }
 
@@ -59,7 +59,7 @@ class AppointmentController extends Controller
         return Inertia::render('Appointments/Edit', [
             'appointment' => $appointment,
             'parties' => Party::orderBy('full_name')->get(['id', 'full_name']),
-            'users' => User::orderBy('name')->get(['id', 'name']),
+            'users' => User::orderBy('name')->get(['id', 'name'])->makeHidden(['profile_photo_url']),
         ]);
     }
 
