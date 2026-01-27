@@ -237,7 +237,7 @@ const showUploadForm = ref(false);
                             <div v-else></div>
                             <div class="flex items-center gap-4">
                                 <Link :href="route('users.index')" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 underline">{{ $t('Cancel') }}</Link>
-                                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">{{ $t('Update User') }}</PrimaryButton>
+                                <PrimaryButton :loading="form.processing">{{ $t('Update User') }}</PrimaryButton>
                             </div>
                         </div>
                     </form>
@@ -301,7 +301,7 @@ const showUploadForm = ref(false);
                             </div>
                             <div class="flex justify-end gap-3">
                                 <button type="button" @click="showUploadForm = false" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">{{ $t('Cancel') }}</button>
-                                <PrimaryButton :class="{ 'opacity-25': docForm.processing }" :disabled="docForm.processing">{{ $t('Upload') }}</PrimaryButton>
+                                <PrimaryButton :loading="docForm.processing">{{ $t('Upload') }}</PrimaryButton>
                             </div>
                         </form>
                     </div>
