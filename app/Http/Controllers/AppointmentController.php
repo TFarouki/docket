@@ -6,8 +6,8 @@ use App\Models\Appointment;
 use App\Models\Party;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Request as RequestFacade;
+use Inertia\Inertia;
 
 class AppointmentController extends Controller
 {
