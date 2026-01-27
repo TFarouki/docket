@@ -3,6 +3,10 @@
 **Learning:** Default resource controllers (or custom actions on them) often lack implicit authorization unless `authorizeResource` or specific middleware is used. Relying on "obscure" file paths (hashes) is insufficient if the retrieval endpoint exposes the file via predictable IDs.
 **Prevention:** Always ensure that file download endpoints verify that the current user has permission to view the specific document or the entity it is attached to. Explicitly check permissions like `view documents` or `view matter`.
 
+## 2026-02-12 - [Critical] Controller Constructor Middleware Unavailable
+**Vulnerability:** `MatterController` exposed all actions to any authenticated user.
+**Learning:** The project's base `Controller` class does not extend `Illuminate\Routing\Controller`, rendering `this->middleware()` in constructors ineffective/unavailable. This leads to missing auth checks if developers assume standard Laravel behavior.
+**Prevention:** Use explicit inline checks (e.g., `abort_unless`) in every controller method or define permission middleware directly in route definitions (`routes/web.php`).
 ## 2026-01-24 - [Critical] Missing Authorization in Resource Controllers
 **Vulnerability:** Core resource controllers like `PartyController`, `MatterController`, and `UserController` were completely unprotected, allowing any authenticated user (regardless of role) to perform CRUD operations.
 **Learning:** The project relies on manual authorization checks inside controller methods rather than route-based middleware or global policies. Simply protecting routes with `auth` middleware is insufficient for Role-Based Access Control (RBAC).
