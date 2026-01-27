@@ -12,6 +12,10 @@ Instead of:
 $query->where('a', 1)->orWhere('b', 1);
 ```
 
+## 2026-01-25 - Hidden Appends Trap
+**Learning:** Even when selecting specific columns (e.g., `get(['id', 'name'])`), Eloquent models will still serialize all attributes defined in `$appends`. This can lead to N+1 computation issues or bloated payloads (e.g., generating `profile_photo_url` for every user in a dropdown).
+
+**Action:** When returning collections of models for simple lists (like dropdowns), always chain `->makeHidden(['appended_attribute'])` if the attribute is not needed.
 ## 2026-01-24 - Hidden Appends for Dropdowns
 **Learning:** Models with `$appends` (like `User`'s `profile_photo_url`) force accessor execution and payload inclusion even when selecting specific columns (e.g., `get(['id', 'name'])`). This bloats JSON responses for simple dropdowns.
 
