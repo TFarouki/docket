@@ -12,6 +12,13 @@ Instead of:
 $query->where('a', 1)->orWhere('b', 1);
 ```
 
+## 2026-01-24 - Hidden Appends for Dropdowns
+**Learning:** Models with `$appends` (like `User`'s `profile_photo_url`) force accessor execution and payload inclusion even when selecting specific columns (e.g., `get(['id', 'name'])`). This bloats JSON responses for simple dropdowns.
+
+**Action:** Use `->makeHidden(['attribute'])` on the collection when fetching lists for dropdowns to exclude unneeded appended attributes:
+```php
+User::get(['id', 'name'])->makeHidden(['profile_photo_url'])
+```
 ## 2026-01-23 - Global Appends Overhead
 **Learning:** Models with global `$appends` (like `User::$appends = ['profile_photo_url']`) trigger accessor logic on *every* serialization, even for simple ID/Name dropdowns. This adds unnecessary computation and payload size.
 
