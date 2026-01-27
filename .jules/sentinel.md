@@ -7,3 +7,7 @@
 **Vulnerability:** The `users` resource route was missing authorization middleware, allowing any authenticated user to access user management functions (create, edit, delete users) and potentially escalate privileges to Admin/Root.
 **Learning:** Resource controllers defined in `routes/web.php` do not inherit authorization checks automatically. Middleware must be explicitly applied either in the route definition or the controller constructor.
 **Prevention:** Always verify that administrative routes (like `users`, `settings`) have explicit `middleware('can:permission_name')` or `middleware('role:role_name')` attached. Use automated tests to assert that unauthorized users receive 403 Forbidden on these routes.
+## 2026-10-24 - [Critical] Missing Authorization in User Management
+**Vulnerability:** The `UserController` resource routes were accessible to any authenticated user, allowing privilege escalation.
+**Learning:** Placing routes inside an `auth` middleware group only checks for authentication, not authorization. Resource controllers do not automatically restrict access based on roles.
+**Prevention:** Always attach specific permission middleware (e.g., `can:manage users`) to sensitive resource routes or use `authorizeResource` within the controller.
