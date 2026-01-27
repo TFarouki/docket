@@ -169,7 +169,7 @@ const destroy = () => {
                         </div>
 
                         <div class="flex items-center justify-between">
-                            <DangerButton type="button" @click="destroy" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                            <DangerButton type="button" @click="destroy" :loading="form.processing">
                                 {{ $t('Delete Appointment') }}
                             </DangerButton>
 
