@@ -15,12 +15,14 @@ class AppointmentController extends Controller
     {
         return Inertia::render('Appointments/Index', [
             'appointments' => Appointment::query()
-                ->with(['party', 'assignee'])
+                ->with('party:id,full_name')
                 ->when(RequestFacade::input('search'), function ($query, $search) {
-                    $query->where('title', 'like', "%{$search}%")
-                        ->orWhereHas('party', function ($q) use ($search) {
-                            $q->where('full_name', 'like', "%{$search}%");
-                        });
+                    $query->where(function ($q) use ($search) {
+                        $q->where('title', 'like', "%{$search}%")
+                            ->orWhereHas('party', function ($subQ) use ($search) {
+                                $subQ->where('full_name', 'like', "%{$search}%");
+                            });
+                    });
                 })
                 ->latest('start_time')
                 ->paginate(10)
@@ -33,7 +35,7 @@ class AppointmentController extends Controller
     {
         return Inertia::render('Appointments/Create', [
             'parties' => Party::orderBy('full_name')->get(['id', 'full_name']),
-            'users' => User::orderBy('name')->get(['id', 'name'])->makeHidden(['profile_photo_url']), // Optimize: Remove expensive appended attribute
+            'users' => User::orderBy('name')->get(['id', 'name'])->makeHidden(['profile_photo_url']),
         ]);
     }
 
@@ -59,7 +61,7 @@ class AppointmentController extends Controller
         return Inertia::render('Appointments/Edit', [
             'appointment' => $appointment,
             'parties' => Party::orderBy('full_name')->get(['id', 'full_name']),
-            'users' => User::orderBy('name')->get(['id', 'name'])->makeHidden(['profile_photo_url']), // Optimize: Remove expensive appended attribute
+            'users' => User::orderBy('name')->get(['id', 'name'])->makeHidden(['profile_photo_url']),
         ]);
     }
 
