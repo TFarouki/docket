@@ -11,6 +11,10 @@ class PartyController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('view parties')) {
+            abort(403);
+        }
+
         return Inertia::render('Parties/Index', [
             'parties' => Party::query()
                 ->when(RequestFacade::input('search'), function ($query, $search) {
@@ -32,11 +36,19 @@ class PartyController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('create parties')) {
+            abort(403);
+        }
+
         return Inertia::render('Parties/Create');
     }
 
     public function store(Request $request)
     {
+        if (!auth()->user()->can('create parties')) {
+            abort(403);
+        }
+
         $validated = $request->validate([
             'type' => 'required|in:client,opponent,other,lead',
             'full_name' => 'required|string|max:255',
@@ -53,6 +65,10 @@ class PartyController extends Controller
     }
     public function edit(Party $party)
     {
+        if (!auth()->user()->can('edit parties')) {
+            abort(403);
+        }
+
         return Inertia::render('Parties/Edit', [
             'party' => $party,
         ]);
@@ -60,6 +76,10 @@ class PartyController extends Controller
 
     public function update(Request $request, Party $party)
     {
+        if (!auth()->user()->can('edit parties')) {
+            abort(403);
+        }
+
         $validated = $request->validate([
             'type' => 'required|in:client,opponent,other,lead',
             'full_name' => 'required|string|max:255',
@@ -77,6 +97,10 @@ class PartyController extends Controller
 
     public function destroy(Party $party)
     {
+        if (!auth()->user()->can('delete parties')) {
+            abort(403);
+        }
+
         $party->delete();
 
         return redirect()->route('parties.index')->with('success', 'Party deleted successfully.');
