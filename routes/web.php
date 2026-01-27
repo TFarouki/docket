@@ -52,7 +52,31 @@ Route::middleware('auth')->group(function () {
     Route::post('system-settings', [SystemSettingController::class, 'update'])->name('system-settings.update');
 
     // CRM: Appointments
-    Route::resource('appointments', AppointmentController::class);
+    Route::prefix('appointments')->name('appointments.')->group(function () {
+        Route::get('/', [AppointmentController::class, 'index'])
+            ->name('index')
+            ->middleware('can:view appointments');
+
+        Route::get('/create', [AppointmentController::class, 'create'])
+            ->name('create')
+            ->middleware('can:create appointments');
+
+        Route::post('/', [AppointmentController::class, 'store'])
+            ->name('store')
+            ->middleware('can:create appointments');
+
+        Route::get('/{appointment}/edit', [AppointmentController::class, 'edit'])
+            ->name('edit')
+            ->middleware('can:edit appointments');
+
+        Route::match(['put', 'patch'], '/{appointment}', [AppointmentController::class, 'update'])
+            ->name('update')
+            ->middleware('can:edit appointments');
+
+        Route::delete('/{appointment}', [AppointmentController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware('can:delete appointments');
+    });
 });
 
 Route::get('lang/{locale}', [SettingsController::class, 'setSessionLocale'])->name('lang.switch');
