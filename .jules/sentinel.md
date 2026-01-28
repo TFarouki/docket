@@ -27,3 +27,8 @@
 **Vulnerability:** The `UserController` resource routes were accessible to any authenticated user, allowing privilege escalation.
 **Learning:** Placing routes inside an `auth` middleware group only checks for authentication, not authorization. Resource controllers do not automatically restrict access based on roles.
 **Prevention:** Always attach specific permission middleware (e.g., `can:manage users`) to sensitive resource routes or use `authorizeResource` within the controller.
+
+## 2026-02-14 - [High] Missing Authorization in Sub-Resource Controllers
+**Vulnerability:** Helper controllers for Matters (`CourtCaseController` and `HearingController`) were exposed via `Route::resource` without authorization checks, allowing any authenticated user to modify legal cases.
+**Learning:** Developers often secure the "parent" resource (Matters) but forget to secure the "child" resources that are managed separately via their own controllers.
+**Prevention:** Audit all `Route::resource` definitions in `routes/web.php` to ensure they have appropriate `middleware('can:...')` attached, especially for sub-resources that modify critical data.
