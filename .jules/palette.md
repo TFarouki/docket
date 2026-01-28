@@ -19,3 +19,6 @@
 ## 2026-01-27 - Button Loading States
 **Learning:** `DangerButton` and `SecondaryButton` lacked the standard `loading` prop present in `PrimaryButton`, leading to inconsistent implementation of loading states across the app.
 **Action:** Implemented `loading` prop in both components to match `PrimaryButton` and updated `Appointments/Edit.vue` to use it.
+## 2026-01-28 - Consistent Empty States
+**Learning:** Users often land on lists with no data (e.g., Appointments, Matters). A generic "No data" row is uninviting and offers no guidance.
+**Action:** Implemented a reusable `EmptyState` component with an icon, encouraging message, and a clear call-to-action button to guide users to the "create" flow immediately. This reduces friction for new users or empty filters.

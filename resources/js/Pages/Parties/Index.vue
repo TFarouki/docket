@@ -1,4 +1,5 @@
 <script setup>
+import EmptyState from '@/Components/EmptyState.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -96,8 +97,12 @@ watch([search, type], ([searchValue, typeValue]) => {
                                     </td>
                                 </tr>
                                 <tr v-if="parties.data.length === 0">
-                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                                        {{ $t('No parties found.') }}
+                                    <td colspan="5" class="px-6 py-4">
+                                        <EmptyState
+                                            :title="$t('No parties found')"
+                                            :description="$t('Create a new party to start tracking clients, leads, or opponents.')"
+                                            :action="{ text: $t('Add New Party'), href: route('parties.create') }"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>

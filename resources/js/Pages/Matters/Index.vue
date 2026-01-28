@@ -1,4 +1,5 @@
 <script setup>
+import EmptyState from '@/Components/EmptyState.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -99,8 +100,12 @@ watch(search, (value) => {
                                     </td>
                                 </tr>
                                 <tr v-if="matters.data.length === 0">
-                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
-                                        {{ $t('No matters found.') }}
+                                    <td colspan="6" class="px-6 py-4">
+                                        <EmptyState
+                                            :title="$t('No matters found')"
+                                            :description="$t('Create a new matter to manage cases or procedures.')"
+                                            :action="{ text: $t('New Matter'), href: route('matters.create') }"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>
