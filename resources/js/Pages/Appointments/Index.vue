@@ -1,4 +1,5 @@
 <script setup>
+import EmptyState from '@/Components/EmptyState.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -91,8 +92,12 @@ watch(search, (value) => {
                                     </td>
                                 </tr>
                                 <tr v-if="appointments.data.length === 0">
-                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                                        {{ $t('No appointments found.') }}
+                                    <td colspan="5" class="px-6 py-4">
+                                        <EmptyState
+                                            :title="$t('No appointments found')"
+                                            :description="$t('Get started by scheduling your first appointment.')"
+                                            :action="{ text: $t('Schedule Appointment'), href: route('appointments.create') }"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>
