@@ -1,4 +1,5 @@
 <script setup>
+import EmptyState from '@/Components/EmptyState.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -36,7 +37,11 @@ watch([search, type], ([searchValue, typeValue]) => {
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="flex-1 w-full max-w-md flex gap-4">
                          <!-- Tabs/Filter -->
-                        <select v-model="type" class="border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-md shadow-sm">
+                        <select
+                            v-model="type"
+                            class="border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-md shadow-sm"
+                            :aria-label="$t('Filter by type')"
+                        >
                             <option value="">{{ $t('All Types') }}</option>
                             <option value="client">{{ $t('Clients') }}</option>
                             <option value="lead">{{ $t('Leads') }}</option>
@@ -48,6 +53,7 @@ watch([search, type], ([searchValue, typeValue]) => {
                             type="search"
                             class="block w-full flex-1"
                             :placeholder="$t('Search by name, phone, or ID...')"
+                            :aria-label="$t('Search parties')"
                         />
                     </div>
                     <Link
@@ -96,8 +102,20 @@ watch([search, type], ([searchValue, typeValue]) => {
                                     </td>
                                 </tr>
                                 <tr v-if="parties.data.length === 0">
-                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                                        {{ $t('No parties found.') }}
+                                    <td colspan="5" class="px-6 py-4">
+                                        <EmptyState
+                                            :title="$t('No parties found')"
+                                            :description="$t('Get started by creating a new party.')"
+                                        >
+                                            <template #action>
+                                                <Link
+                                                    :href="route('parties.create')"
+                                                    class="inline-flex items-center px-4 py-2 bg-brand-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-brand-500 active:bg-brand-700 focus:outline-none transition ease-in-out duration-150"
+                                                >
+                                                    {{ $t('Add New Party') }}
+                                                </Link>
+                                            </template>
+                                        </EmptyState>
                                     </td>
                                 </tr>
                             </tbody>
