@@ -73,7 +73,17 @@ class MatterController extends Controller
     {
         abort_unless(auth()->user()->can('view matters'), 403);
 
-        $matter->load(['party', 'responsibleLawyer', 'courtCases.hearings']); // Eager load relationships
+        // Optimize eager loading: select only necessary columns and hide appended attributes
+        $matter->load([
+            'party:id,full_name',
+            'responsibleLawyer:id,name',
+            'courtCases:id,matter_id,court_name,case_number,judge_name,opponent_lawyer,current_stage',
+            'courtCases.hearings:id,court_case_id,date_time,procedure_result'
+        ]);
+
+        if ($matter->responsibleLawyer) {
+            $matter->responsibleLawyer->makeHidden('profile_photo_url');
+        }
 
         return Inertia::render('Matters/Show', [
             'matter' => $matter,
