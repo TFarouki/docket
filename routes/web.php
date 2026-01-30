@@ -33,8 +33,8 @@ Route::middleware('auth')->group(function () {
 
     // Core: Matter Management (Litigation)
     Route::resource('matters', MatterController::class);
-    Route::resource('court-cases', CourtCaseController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
-    Route::resource('hearings', HearingController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+    Route::resource('court-cases', CourtCaseController::class)->only(['create', 'store', 'edit', 'update', 'destroy'])->middleware('can:edit matters');
+    Route::resource('hearings', HearingController::class)->only(['create', 'store', 'edit', 'update', 'destroy'])->middleware('can:edit matters');
 
     // Admin: User Management
     Route::resource('users', UserController::class)->middleware('can:manage users');
