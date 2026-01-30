@@ -1,6 +1,6 @@
 <script setup>
 import EmptyState from '@/Components/EmptyState.vue';
-import TextInput from '@/Components/TextInput.vue';
+import SearchInput from '@/Components/SearchInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
@@ -11,12 +11,18 @@ const props = defineProps({
 });
 
 const search = ref(props.filters.search || '');
+const isLoading = ref(false);
 
 watch(search, (value) => {
     router.get(
         route('matters.index'),
         { search: value },
-        { preserveState: true, replace: true }
+        {
+            preserveState: true,
+            replace: true,
+            onStart: () => (isLoading.value = true),
+            onFinish: () => (isLoading.value = false),
+        }
     );
 });
 </script>
@@ -35,11 +41,12 @@ watch(search, (value) => {
                 <!-- Actions Bar -->
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex-1 max-w-md">
-                        <TextInput
+                        <SearchInput
                             v-model="search"
-                            type="search"
                             class="block w-full"
                             :placeholder="$t('Search by title or reference...')"
+                            :loading="isLoading"
+                            :aria-label="$t('Search matters')"
                         />
                     </div>
                     <Link
