@@ -37,7 +37,11 @@ watch([search, type], ([searchValue, typeValue]) => {
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="flex-1 w-full max-w-md flex gap-4">
                          <!-- Tabs/Filter -->
-                        <select v-model="type" class="border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-md shadow-sm">
+                        <select
+                            v-model="type"
+                            class="border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-md shadow-sm"
+                            :aria-label="$t('Filter by type')"
+                        >
                             <option value="">{{ $t('All Types') }}</option>
                             <option value="client">{{ $t('Clients') }}</option>
                             <option value="lead">{{ $t('Leads') }}</option>
@@ -49,6 +53,7 @@ watch([search, type], ([searchValue, typeValue]) => {
                             type="search"
                             class="block w-full flex-1"
                             :placeholder="$t('Search by name, phone, or ID...')"
+                            :aria-label="$t('Search parties')"
                         />
                     </div>
                     <Link
