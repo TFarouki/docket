@@ -1,6 +1,6 @@
 <script setup>
 import EmptyState from '@/Components/EmptyState.vue';
-import TextInput from '@/Components/TextInput.vue';
+import SearchInput from '@/Components/SearchInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
@@ -11,12 +11,18 @@ const props = defineProps({
 });
 
 const search = ref(props.filters.search || '');
+const isLoading = ref(false);
 
 watch(search, (searchValue) => {
     router.get(
         route('parties.index'),
         { search: searchValue },
-        { preserveState: true, replace: true }
+        {
+            preserveState: true,
+            replace: true,
+            onStart: () => (isLoading.value = true),
+            onFinish: () => (isLoading.value = false),
+        }
     );
 });
 </script>
@@ -36,11 +42,11 @@ watch(search, (searchValue) => {
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="flex-1 w-full max-w-md flex gap-4">
 
-                        <TextInput
+                        <SearchInput
                             v-model="search"
-                            type="search"
                             class="block w-full flex-1"
                             :placeholder="$t('Search by name, phone, or ID...')"
+                            :loading="isLoading"
                             :aria-label="$t('Search parties')"
                         />
                     </div>

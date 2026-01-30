@@ -22,3 +22,6 @@
 ## 2026-01-28 - Consistent Empty States
 **Learning:** Users often land on lists with no data (e.g., Appointments, Matters). A generic "No data" row is uninviting and offers no guidance.
 **Action:** Implemented a reusable `EmptyState` component with an icon, encouraging message, and a clear call-to-action button to guide users to the "create" flow immediately. This reduces friction for new users or empty filters.
+## 2026-02-17 - Immediate Search Feedback
+**Learning:** Users often lack feedback during server-side filtering (debounced or not), leading to uncertainty if the search is working. Adding a loading spinner directly inside the search input provides immediate, localized feedback that is superior to a global progress bar for this context.
+**Action:** Use a dedicated `SearchInput` component with a loading state prop connected to Inertia visit events (`onStart`/`onFinish`) to provide clear visual feedback during data fetching.
