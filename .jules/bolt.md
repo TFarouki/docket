@@ -45,3 +45,18 @@ User::get(['id', 'name'])->makeHidden(['profile_photo_url'])
 1. Check Vue/Blade templates to see what data is actually used.
 2. Remove unused relationships from `with()`.
 3. Use `relation:id,name` syntax to select only necessary columns.
+
+## 2026-02-14 - Optimizing Eager Loaded Relations with Through
+**Learning:** When using `with()` to eager load relationships, attributes in `$appends` (like `profile_photo_url`) are still calculated and serialized. To hide them without causing N+1 queries, use `->through()` on the paginator and call `makeHidden()` on the *already loaded* relationship.
+
+**Action:**
+```php
+Model::with('relation')
+    ->paginate()
+    ->through(function ($model) {
+        if ($model->relation) {
+            $model->relation->makeHidden('appended_attr');
+        }
+        return $model;
+    });
+```
