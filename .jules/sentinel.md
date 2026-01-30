@@ -32,3 +32,8 @@
 **Vulnerability:** Helper controllers for Matters (`CourtCaseController` and `HearingController`) were exposed via `Route::resource` without authorization checks, allowing any authenticated user to modify legal cases.
 **Learning:** Developers often secure the "parent" resource (Matters) but forget to secure the "child" resources that are managed separately via their own controllers.
 **Prevention:** Audit all `Route::resource` definitions in `routes/web.php` to ensure they have appropriate `middleware('can:...')` attached, especially for sub-resources that modify critical data.
+
+## 2026-02-14 - [Critical] Missing Authorization in DocumentCategoryController
+**Vulnerability:** The `DocumentCategoryController` exposed `store` and `index` endpoints to any authenticated user, allowing potentially malicious or confused users to spam or pollute global document categories.
+**Learning:** Even auxiliary resources like "categories" or "tags" that seem low-risk must have authorization checks if they modify global state. Do not assume that because a feature is "small" or "just a dropdown" it doesn't need protection.
+**Prevention:** Apply `can:permission` middleware or manual authorization checks to all controller methods that modify state (`store`, `update`, `destroy`). Review all controllers in `routes/web.php` that lack specific permission middleware.
