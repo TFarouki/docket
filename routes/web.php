@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\CalendarController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -46,6 +47,9 @@ Route::middleware('auth')->group(function () {
     
     Route::get('document-categories', [DocumentCategoryController::class, 'index'])->name('document-categories.index');
     Route::post('document-categories', [DocumentCategoryController::class, 'store'])->name('document-categories.store');
+
+    // Calendar / Agenda
+    Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
     // System Settings (Root only)
     Route::get('system-settings', [SystemSettingController::class, 'index'])->name('system-settings.index');

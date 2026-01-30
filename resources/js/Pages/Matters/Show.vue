@@ -5,6 +5,17 @@ import { Head, Link } from '@inertiajs/vue3';
 const props = defineProps({
     matter: Object,
 });
+
+const formatDateTime = (dateStr) => {
+    if (!dateStr) return '-';
+    const date = new Date(dateStr);
+    const d = String(date.getDate()).padStart(2, '0');
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const y = date.getFullYear();
+    const h = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    return `${d}/${m}/${y} ${h}:${min}`;
+};
 </script>
 
 <template>
@@ -126,11 +137,10 @@ const props = defineProps({
                                             </thead>
                                             <tbody class="bg-white divide-y divide-gray-200">
                                                 <tr v-for="hearing in courtCase.hearings" :key="hearing.id">
-                                                    <td class="px-4 py-2 text-sm text-gray-900">
-                                                        {{ new Date(hearing.session_date).toLocaleDateString() }}
-                                                        <span class="text-gray-400 text-xs ml-1">{{ new Date(hearing.session_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }}</span>
+                                                    <td class="px-4 py-2 text-sm text-gray-900 font-mono">
+                                                        {{ formatDateTime(hearing.date_time) }}
                                                     </td>
-                                                    <td class="px-4 py-2 text-sm text-gray-500">{{ hearing.outcome || '-' }}</td>
+                                                    <td class="px-4 py-2 text-sm text-gray-500">{{ hearing.procedure_result || '-' }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

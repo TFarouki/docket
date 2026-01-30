@@ -86,9 +86,9 @@ const toggleSidebar = () => {
                         <span v-if="!isSidebarCollapsed" class="font-medium ms-3 whitespace-nowrap">{{ $t('Parties') }}</span>
                     </Link>
 
-                    <Link :href="route('appointments.index')" :class="{'bg-brand-50 text-brand-700 dark:bg-brand-900/40 dark:text-brand-400': route().current('appointments.*'), 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700': !route().current('appointments.*')}" class="flex items-center px-4 py-3 rounded-lg transition-colors group">
+                    <Link :href="route('calendar.index')" :class="{'bg-brand-50 text-brand-700 dark:bg-brand-900/40 dark:text-brand-400': route().current('calendar.index'), 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700': !route().current('calendar.index')}" class="flex items-center px-4 py-3 rounded-lg transition-colors group">
                         <svg class="h-6 w-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        <span v-if="!isSidebarCollapsed" class="font-medium ms-3 whitespace-nowrap">{{ $t('Appointments') }}</span>
+                        <span v-if="!isSidebarCollapsed" class="font-medium ms-3 whitespace-nowrap">{{ $t('Calendar') }}</span>
                     </Link>
 
                     <Link :href="route('matters.index')" :class="{'bg-brand-50 text-brand-700 dark:bg-brand-900/40 dark:text-brand-400': route().current('matters.*'), 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700': !route().current('matters.*')}" class="flex items-center px-4 py-3 rounded-lg transition-colors group">
@@ -117,6 +117,13 @@ const toggleSidebar = () => {
 
             <!-- Main Content Area -->
             <main class="flex-1 flex flex-col min-w-0 bg-gray-50 dark:bg-gray-900 overflow-hidden transition-colors duration-300">
+                <!-- Page Heading -->
+                <header class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 shadow-sm" v-if="$slots.header">
+                    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                        <slot name="header" />
+                    </div>
+                </header>
+
                 <div class="flex-1 overflow-y-auto p-6">
                     <slot />
                 </div>

@@ -11,7 +11,6 @@ class Party extends Model
     use HasFactory, HasDynamicFeatures;
 
     protected $fillable = [
-        'type',
         'full_name',
         'phone',
         'email',
@@ -19,6 +18,14 @@ class Party extends Model
         'address',
         'notes',
     ];
+
+    /**
+     * Get all of the party's documents.
+     */
+    public function documents()
+    {
+        return $this->morphMany(Document::class, 'documentable');
+    }
 
     public function matters()
     {

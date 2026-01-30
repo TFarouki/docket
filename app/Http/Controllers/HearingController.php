@@ -23,8 +23,8 @@ class HearingController extends Controller
     {
         $validated = $request->validate([
             'court_case_id' => 'required|exists:court_cases,id',
-            'session_date' => 'required|date',
-            'outcome' => 'nullable|string',
+            'date_time' => 'required|date',
+            'procedure_result' => 'nullable|string',
             'notes' => 'nullable|string',
         ]);
 

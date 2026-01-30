@@ -24,13 +24,11 @@ class PartyController extends Controller
                             ->orWhere('national_id', 'like', "%{$search}%");
                     });
                 })
-                ->when(RequestFacade::input('type'), function ($query, $type) {
-                    $query->where('type', $type);
-                })
+                ->latest()
                 ->latest()
                 ->paginate(10)
                 ->withQueryString(),
-            'filters' => RequestFacade::only(['search', 'type']),
+            'filters' => RequestFacade::only(['search']),
         ]);
     }
 
@@ -50,7 +48,6 @@ class PartyController extends Controller
         }
 
         $validated = $request->validate([
-            'type' => 'required|in:client,opponent,other,lead',
             'full_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
@@ -70,7 +67,8 @@ class PartyController extends Controller
         }
 
         return Inertia::render('Parties/Edit', [
-            'party' => $party,
+            'party' => $party->load('documents.category'),
+            'document_categories' => \App\Models\DocumentCategory::orderBy('name')->get(),
         ]);
     }
 
@@ -81,7 +79,6 @@ class PartyController extends Controller
         }
 
         $validated = $request->validate([
-            'type' => 'required|in:client,opponent,other,lead',
             'full_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',

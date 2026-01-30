@@ -4,6 +4,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import DateTimePicker from '@/Components/DateTimePicker.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
@@ -25,24 +26,20 @@ const form = useForm({
 
 // Format dates for datetime-local input if needed
 // Simple formatting helper
-const formatDate = (dateString) => {
+const formatDateForInput = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    // Adjust to local ISO string roughly (simplification)
-    // Or just use the string if it comes in correct format from backend
-    // Typically backend sends ISO 8601 (UTC). We need to show local time in input.
-    // For simplicity, we assume the user handles timezones or we rely on browser default behavior with some caveats.
-    // A robust solution uses a library like date-fns or moment.
-
-    // Quick hack for YYYY-MM-DDTHH:mm
-    const offset = date.getTimezoneOffset() * 60000;
-    const localISOTime = (new Date(date - offset)).toISOString().slice(0, 16);
-    return localISOTime;
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    const h = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    return `${y}-${m}-${d} ${h}:${min}`;
 };
 
 // Apply formatting on init
-form.start_time = formatDate(props.appointment.start_time);
-form.end_time = formatDate(props.appointment.end_time);
+form.start_time = formatDateForInput(props.appointment.start_time);
+form.end_time = formatDateForInput(props.appointment.end_time);
 
 
 const submit = () => {
@@ -115,13 +112,11 @@ const destroy = () => {
                         </div>
 
                         <!-- Times -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-100 dark:border-gray-700">
                             <div>
                                 <InputLabel for="start_time" :value="$t('Start Time')" />
-                                <TextInput
+                                <DateTimePicker
                                     id="start_time"
-                                    type="datetime-local"
-                                    class="mt-1 block w-full"
                                     v-model="form.start_time"
                                     required
                                 />
@@ -130,10 +125,8 @@ const destroy = () => {
 
                             <div>
                                 <InputLabel for="end_time" :value="$t('End Time (Optional)')" />
-                                <TextInput
+                                <DateTimePicker
                                     id="end_time"
-                                    type="datetime-local"
-                                    class="mt-1 block w-full"
                                     v-model="form.end_time"
                                 />
                                 <InputError class="mt-2" :message="form.errors.end_time" />

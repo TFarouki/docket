@@ -12,8 +12,10 @@ class Hearing extends Model
 
     protected $fillable = [
         'court_case_id',
-        'session_date',
-        'outcome',
+        'date_time',
+        'hall_number',
+        'procedure_result',
+        'next_hearing_date',
         'notes',
     ];
 

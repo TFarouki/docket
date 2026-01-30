@@ -53,4 +53,9 @@
     - [x] System Configuration (Root)
         - [x] Dynamic Feature Toggles (SoftDelete, UserTracking)
         - [x] System Settings UI
+    - [x] Calendar View Enhancements
+        - [x] Translate interface components (Tooltips, Buttons) to Arabic
+        - [x] Fix appointment disappearance bug in weekly view
+        - [x] Fix calendar column alignment due to scrollbar
+        - [x] Fix 'Today' button colors in dark mode
     - [ ] ... (To be defined)

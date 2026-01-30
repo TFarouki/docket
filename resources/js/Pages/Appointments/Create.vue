@@ -3,6 +3,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import DateTimePicker from '@/Components/DateTimePicker.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
@@ -11,12 +12,35 @@ const props = defineProps({
     users: Array,
 });
 
+const urlParams = new URLSearchParams(window.location.search);
+const initialDate = urlParams.get('date');
+const initialTime = urlParams.get('time') || '09:00';
+
+const formatDateForInput = (date) => {
+    if (!date) return '';
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    const h = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    return `${y}-${m}-${d} ${h}:${min}`;
+};
+
+const getDefaultEndTime = (startStr) => {
+    if (!startStr) return '';
+    const date = new Date(startStr);
+    date.setMinutes(date.getMinutes() + 15);
+    return formatDateForInput(date);
+};
+
+const startVal = initialDate ? `${initialDate} ${initialTime}` : '';
+
 const form = useForm({
     title: '',
     party_id: '',
     assigned_to: '',
-    start_time: '',
-    end_time: '',
+    start_time: startVal,
+    end_time: getDefaultEndTime(startVal),
     status: 'scheduled',
     notes: '',
 });
@@ -86,13 +110,11 @@ const submit = () => {
                         </div>
 
                         <!-- Times -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-100 dark:border-gray-700">
                             <div>
                                 <InputLabel for="start_time" :value="$t('Start Time')" />
-                                <TextInput
+                                <DateTimePicker
                                     id="start_time"
-                                    type="datetime-local"
-                                    class="mt-1 block w-full"
                                     v-model="form.start_time"
                                     required
                                 />
@@ -101,10 +123,8 @@ const submit = () => {
 
                             <div>
                                 <InputLabel for="end_time" :value="$t('End Time (Optional)')" />
-                                <TextInput
+                                <DateTimePicker
                                     id="end_time"
-                                    type="datetime-local"
-                                    class="mt-1 block w-full"
                                     v-model="form.end_time"
                                 />
                                 <InputError class="mt-2" :message="form.errors.end_time" />
@@ -139,8 +159,8 @@ const submit = () => {
                             <InputError class="mt-2" :message="form.errors.notes" />
                         </div>
 
-                        <div class="flex items-center justify-end gap-4">
-                            <Link :href="route('appointments.index')" class="text-sm text-gray-600 hover:text-gray-900 underline">
+                        <div class="flex items-center justify-end gap-4 mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
+                            <Link :href="route('appointments.index')" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 underline">
                                 {{ $t('Cancel') }}
                             </Link>
 

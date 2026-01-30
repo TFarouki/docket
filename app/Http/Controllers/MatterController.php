@@ -41,7 +41,7 @@ class MatterController extends Controller
         abort_unless(auth()->user()->can('create matters'), 403);
 
         return Inertia::render('Matters/Create', [
-            'clients' => Party::orderBy('full_name')->get(['id', 'full_name', 'type']),
+            'clients' => Party::orderBy('full_name')->get(['id', 'full_name']),
             'lawyers' => User::orderBy('name')->get(['id', 'name'])->makeHidden(['profile_photo_url']), // Ideally filter by role 'lawyer'/'associate'
         ]);
     }
@@ -66,11 +66,6 @@ class MatterController extends Controller
 
         Matter::create($validated);
 
-        // Auto-convert 'lead' to 'client'
-        $party = Party::find($validated['party_id']);
-        if ($party && $party->type === 'lead') {
-            $party->update(['type' => 'client']);
-        }
 
         return redirect()->route('matters.index')->with('success', 'Matter created successfully.');
     }

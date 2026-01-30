@@ -19,6 +19,17 @@ watch(search, (value) => {
         { preserveState: true, replace: true }
     );
 });
+
+const formatDateTime = (dateStr) => {
+    if (!dateStr) return '-';
+    const date = new Date(dateStr);
+    const d = String(date.getDate()).padStart(2, '0');
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const y = date.getFullYear();
+    const h = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    return `${d}/${m}/${y} ${h}:${min}`;
+};
 </script>
 
 <template>
@@ -42,12 +53,20 @@ watch(search, (value) => {
                             :placeholder="$t('Search by title or client...')"
                         />
                     </div>
-                    <Link
-                        :href="route('appointments.create')"
-                        class="inline-flex items-center px-4 py-2 bg-brand-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-brand-500 active:bg-brand-700 focus:outline-none transition ease-in-out duration-150"
-                    >
-                        {{ $t('Schedule Appointment') }}
-                    </Link>
+                    <div class="flex items-center gap-4">
+                        <Link
+                            :href="route('calendar.index')"
+                            class="text-sm font-medium text-gray-600 hover:text-gray-900 underline"
+                        >
+                            {{ $t('Agenda View') }}
+                        </Link>
+                        <Link
+                            :href="route('appointments.create')"
+                            class="inline-flex items-center px-4 py-2 bg-brand-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-brand-500 active:bg-brand-700 focus:outline-none transition ease-in-out duration-150"
+                        >
+                            {{ $t('Schedule Appointment') }}
+                        </Link>
+                    </div>
                 </div>
 
                 <!-- Table -->
@@ -72,7 +91,7 @@ watch(search, (value) => {
                                         {{ appointment.party ? appointment.party.full_name : '-' }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ new Date(appointment.start_time).toLocaleString() }}
+                                        {{ formatDateTime(appointment.start_time) }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <span

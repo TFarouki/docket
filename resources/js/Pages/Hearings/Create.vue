@@ -12,8 +12,8 @@ const props = defineProps({
 
 const form = useForm({
     court_case_id: props.courtCase.id,
-    session_date: '',
-    outcome: '',
+    date_time: '',
+    procedure_result: '',
     notes: '',
 });
 
@@ -38,28 +38,28 @@ const submit = () => {
 
                         <!-- Session Date -->
                         <div>
-                            <InputLabel for="session_date" :value="$t('Session Date')" />
+                            <InputLabel for="date_time" :value="$t('Session Date')" />
                             <TextInput
-                                id="session_date"
+                                id="date_time"
                                 type="datetime-local"
                                 class="mt-1 block w-full"
-                                v-model="form.session_date"
+                                v-model="form.date_time"
                                 required
                             />
-                            <InputError class="mt-2" :message="form.errors.session_date" />
+                            <InputError class="mt-2" :message="form.errors.date_time" />
                         </div>
 
                         <!-- Outcome -->
                          <div>
-                            <InputLabel for="outcome" :value="$t('Outcome / Decision')" />
+                            <InputLabel for="procedure_result" :value="$t('Outcome / Decision')" />
                             <TextInput
-                                id="outcome"
+                                id="procedure_result"
                                 type="text"
                                 class="mt-1 block w-full"
-                                v-model="form.outcome"
+                                v-model="form.procedure_result"
                                 :placeholder="$t('e.g., Postponed for notice')"
                             />
-                            <InputError class="mt-2" :message="form.errors.outcome" />
+                            <InputError class="mt-2" :message="form.errors.procedure_result" />
                         </div>
 
                         <!-- Notes -->
