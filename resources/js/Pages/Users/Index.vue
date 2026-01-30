@@ -1,14 +1,23 @@
 <script setup>
+import EmptyState from '@/Components/EmptyState.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { Head, Link, router } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
     users: Object,
 });
 
 const search = ref('');
+
+watch(search, (value) => {
+    router.get(
+        route('users.index'),
+        { search: value },
+        { preserveState: true, replace: true }
+    );
+});
 </script>
 
 <template>
@@ -77,8 +86,12 @@ const search = ref('');
                                     </td>
                                 </tr>
                                 <tr v-if="users.data.length === 0">
-                                    <td colspan="4" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-                                        {{ $t('No users found.') }}
+                                    <td colspan="4" class="px-6 py-4">
+                                        <EmptyState
+                                            :title="$t('No users found')"
+                                            :description="$t('Add users to the system to assign roles and permissions.')"
+                                            :action="{ text: $t('Add New User'), href: route('users.create') }"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>

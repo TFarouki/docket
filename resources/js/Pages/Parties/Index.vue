@@ -105,17 +105,9 @@ watch([search, type], ([searchValue, typeValue]) => {
                                     <td colspan="5" class="px-6 py-4">
                                         <EmptyState
                                             :title="$t('No parties found')"
-                                            :description="$t('Get started by creating a new party.')"
-                                        >
-                                            <template #action>
-                                                <Link
-                                                    :href="route('parties.create')"
-                                                    class="inline-flex items-center px-4 py-2 bg-brand-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-brand-500 active:bg-brand-700 focus:outline-none transition ease-in-out duration-150"
-                                                >
-                                                    {{ $t('Add New Party') }}
-                                                </Link>
-                                            </template>
-                                        </EmptyState>
+                                            :description="$t('Create a new party to start tracking clients, leads, or opponents.')"
+                                            :action="{ text: $t('Add New Party'), href: route('parties.create') }"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>

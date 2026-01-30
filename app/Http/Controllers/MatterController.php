@@ -25,7 +25,13 @@ class MatterController extends Controller
                 })
                 ->latest()
                 ->paginate(10)
-                ->withQueryString(),
+                ->withQueryString()
+                ->through(function ($matter) {
+                    if ($matter->responsibleLawyer) {
+                        $matter->responsibleLawyer->makeHidden('profile_photo_url');
+                    }
+                    return $matter;
+                }),
             'filters' => RequestFacade::only(['search']),
         ]);
     }
