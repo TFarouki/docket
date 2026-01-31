@@ -37,3 +37,8 @@
 **Vulnerability:** The `DocumentCategoryController` exposed `store` and `index` endpoints to any authenticated user, allowing potentially malicious or confused users to spam or pollute global document categories.
 **Learning:** Even auxiliary resources like "categories" or "tags" that seem low-risk must have authorization checks if they modify global state. Do not assume that because a feature is "small" or "just a dropdown" it doesn't need protection.
 **Prevention:** Apply `can:permission` middleware or manual authorization checks to all controller methods that modify state (`store`, `update`, `destroy`). Review all controllers in `routes/web.php` that lack specific permission middleware.
+
+## 2026-02-14 - [High] Unrestricted Polymorphic File Upload
+**Vulnerability:** `DocumentController::store` accepted arbitrary `documentable_type` and `documentable_id` without validation. This allowed users to attach files to any model in the system (e.g., restricted `SystemSetting` or other users' data) and potentially create arbitrary directories via `class_basename`.
+**Learning:** Polymorphic relationships are powerful but dangerous if inputs are blindly trusted. Standard validation rules often miss dynamic class checks.
+**Prevention:** Always whitelist allowed `documentable_type` values using `Rule::in()`. Validate that the referenced `documentable_id` actually exists in the corresponding table using a custom closure or explicit check.
