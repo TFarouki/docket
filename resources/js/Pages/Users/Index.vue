@@ -4,6 +4,7 @@ import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
+import { debounce } from '@/utils';
 
 const props = defineProps({
     users: Object,
@@ -11,13 +12,13 @@ const props = defineProps({
 
 const search = ref('');
 
-watch(search, (value) => {
+watch(search, debounce((value) => {
     router.get(
         route('users.index'),
         { search: value },
         { preserveState: true, replace: true }
     );
-});
+}, 300));
 </script>
 
 <template>
