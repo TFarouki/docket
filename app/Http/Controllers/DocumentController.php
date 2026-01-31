@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class DocumentController extends Controller
 {
@@ -17,12 +18,36 @@ class DocumentController extends Controller
             abort(403);
         }
 
+        $allowedModels = [
+            'App\Models\User',
+            'App\Models\Matter',
+            'App\Models\Party',
+            'App\Models\CourtCase',
+            'App\Models\Hearing',
+        ];
+
         $request->validate([
             'title' => 'required|string|max:255',
             'document_category_id' => 'required|exists:document_categories,id',
             'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120', // 5MB limit
-            'documentable_id' => 'required|integer',
-            'documentable_type' => 'required|string',
+            'documentable_type' => ['required', 'string', Rule::in($allowedModels)],
+            'documentable_id' => [
+                'required',
+                'integer',
+                function ($attribute, $value, $fail) use ($request, $allowedModels) {
+                    $type = $request->input('documentable_type');
+                    if (!in_array($type, $allowedModels)) {
+                        return; // Type validation handles this
+                    }
+                    if (!class_exists($type)) {
+                         $fail("The document type class does not exist.");
+                         return;
+                    }
+                    if (!$type::where('id', $value)->exists()) {
+                        $fail("The selected $attribute is invalid.");
+                    }
+                },
+            ],
             'description' => 'nullable|string',
         ]);
 
