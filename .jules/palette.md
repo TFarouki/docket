@@ -25,3 +25,7 @@
 ## 2026-02-17 - Immediate Search Feedback
 **Learning:** Users often lack feedback during server-side filtering (debounced or not), leading to uncertainty if the search is working. Adding a loading spinner directly inside the search input provides immediate, localized feedback that is superior to a global progress bar for this context.
 **Action:** Use a dedicated `SearchInput` component with a loading state prop connected to Inertia visit events (`onStart`/`onFinish`) to provide clear visual feedback during data fetching.
+
+## 2026-02-18 - Searchable Select Accessibility
+**Learning:** Custom select components often lack basic keyboard accessibility (tab to focus, enter to toggle). Adding these along with proper ARIA roles (combobox, listbox) transforms the component from 'mouse-only' to fully accessible.
+**Action:** Ensure all custom form controls (Dropdowns, MultiSelects) implement `tabindex="0"`, proper role definitions, and keyboard event handlers for interaction.

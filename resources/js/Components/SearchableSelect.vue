@@ -51,6 +51,14 @@ const selectOption = (option) => {
     search.value = '';
 };
 
+const selectFirstOption = () => {
+    if (filteredOptions.value.length > 0) {
+        selectOption(filteredOptions.value[0]);
+    } else if (props.allowAdd && search.value.trim()) {
+        handleAdd();
+    }
+};
+
 const handleAdd = () => {
     if (search.value.trim()) {
         emit('add', search.value.trim());
@@ -82,6 +90,12 @@ onUnmounted(() => {
         
         <div 
             @click="toggleDropdown"
+            @keydown.enter.prevent="toggleDropdown"
+            @keydown.space.prevent="toggleDropdown"
+            tabindex="0"
+            role="combobox"
+            :aria-expanded="isOpen"
+            aria-haspopup="listbox"
             class="flex items-center justify-between w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm cursor-pointer bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500"
         >
             <span v-if="selectedOption" class="truncate">{{ selectedOption.name }}</span>
@@ -102,15 +116,18 @@ onUnmounted(() => {
                     class="w-full px-3 py-1.5 text-sm border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 rounded focus:border-brand-500 focus:ring-brand-500"
                     :placeholder="$t('Search or add...')"
                     @click.stop
+                    @keydown.enter.prevent="selectFirstOption"
                     autofocus
                 >
             </div>
             
-            <ul class="max-h-60 overflow-y-auto py-1">
+            <ul class="max-h-60 overflow-y-auto py-1" role="listbox">
                 <li 
                     v-for="option in filteredOptions" 
                     :key="option.id"
                     @click="selectOption(option)"
+                    role="option"
+                    :aria-selected="option.id === modelValue"
                     class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-brand-50 dark:hover:bg-brand-900/40 hover:text-brand-700 dark:hover:text-brand-400 cursor-pointer transition-colors"
                     :class="{'bg-brand-50 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 font-semibold': option.id === modelValue}"
                 >
