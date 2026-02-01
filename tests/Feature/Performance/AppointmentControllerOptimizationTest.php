@@ -8,14 +8,26 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AppointmentControllerOptimizationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Permission::create(['name' => 'view appointments']);
+        Permission::create(['name' => 'create appointments']);
+        $role = Role::create(['name' => 'test-role']);
+        $role->givePermissionTo(['view appointments', 'create appointments']);
+    }
+
     public function test_index_optimizes_eager_loading()
     {
         $user = User::factory()->create();
+        $user->assignRole('test-role');
 
         // Create dependencies manually if factories are missing/unreliable for them
         $party = Party::create([
@@ -47,12 +59,7 @@ class AppointmentControllerOptimizationTest extends TestCase
                         ->missing('address') // Should be missing after optimization
                         ->missing('email')
                     )
-                    ->has('assignee', fn (Assert $assigneeJson) => $assigneeJson
-                        ->where('id', $assignee->id)
-                        ->where('name', $assignee->name)
-                        ->missing('email') // Should be missing after optimization
-                        ->etc()
-                    )
+                    ->missing('assignee') // Assignee should not be loaded for index
                     ->etc()
                 )
             );
@@ -61,6 +68,7 @@ class AppointmentControllerOptimizationTest extends TestCase
     public function test_create_optimizes_user_dropdown()
     {
         $user = User::factory()->create();
+        $user->assignRole('test-role');
         User::factory()->count(3)->create();
 
         $this->actingAs($user)
