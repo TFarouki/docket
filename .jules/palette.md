@@ -25,3 +25,7 @@
 ## 2026-02-17 - Immediate Search Feedback
 **Learning:** Users often lack feedback during server-side filtering (debounced or not), leading to uncertainty if the search is working. Adding a loading spinner directly inside the search input provides immediate, localized feedback that is superior to a global progress bar for this context.
 **Action:** Use a dedicated `SearchInput` component with a loading state prop connected to Inertia visit events (`onStart`/`onFinish`) to provide clear visual feedback during data fetching.
+
+## 2026-02-01 - Invalid Input States
+**Learning:** `TextInput` components lacked visual and semantic feedback for validation errors (e.g., red borders, `aria-invalid`), relying solely on separate `InputError` messages.
+**Action:** Added an `invalid` prop to `TextInput` that conditionally applies error styling and `aria-invalid` attribute. This should be used in all forms alongside `InputError` for better accessibility and user feedback.
