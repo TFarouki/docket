@@ -16,7 +16,8 @@ class MatterController extends Controller
         abort_unless(auth()->user()->can('view matters'), 403);
 
         return Inertia::render('Matters/Index', [
-            'matters' => Matter::with(['party:id,full_name', 'responsibleLawyer:id,name'])
+            'matters' => Matter::select('id', 'reference_number', 'title', 'type', 'party_id', 'responsible_lawyer_id', 'status')
+                ->with(['party:id,full_name', 'responsibleLawyer:id,name'])
                 ->when(RequestFacade::input('search'), function ($query, $search) {
                     $query->where(function ($q) use ($search) {
                         $q->where('title', 'like', "%{$search}%")

@@ -11,6 +11,7 @@ class Party extends Model
     use HasFactory, HasDynamicFeatures;
 
     protected $fillable = [
+        'type',
         'full_name',
         'phone',
         'email',

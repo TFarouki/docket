@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UserSerializationTest extends TestCase
 {
@@ -13,7 +15,13 @@ class UserSerializationTest extends TestCase
 
     public function test_user_dropdowns_do_not_contain_profile_photo_url()
     {
+        $role = Role::create(['name' => 'root']);
+        $permission1 = Permission::create(['name' => 'create appointments']);
+        $permission2 = Permission::create(['name' => 'create matters']);
+        $role->givePermissionTo([$permission1, $permission2]);
+
         $user = User::factory()->create();
+        $user->assignRole($role);
 
         // Create some users to populate the dropdown
         User::factory()->count(3)->create();
