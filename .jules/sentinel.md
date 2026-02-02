@@ -43,7 +43,7 @@
 **Learning:** Polymorphic relationships are powerful but dangerous if inputs are blindly trusted. Standard validation rules often miss dynamic class checks.
 **Prevention:** Always whitelist allowed `documentable_type` values using `Rule::in()`. Validate that the referenced `documentable_id` actually exists in the corresponding table using a custom closure or explicit check.
 
-## 2026-02-14 - [High] Data Leak in CalendarController
-**Vulnerability:** The `CalendarController::index` endpoint exposed all appointments and hearings to any authenticated user, regardless of their permissions.
-**Learning:** Dashboard-like or aggregate views (like calendars, feeds) often aggregate data from multiple sources. It's easy to forget to apply the granular permissions of the individual resources (e.g., `view appointments`, `view matters`) to the aggregate query.
-**Prevention:** Always check permissions for each data source in an aggregate controller. If a user lacks permission for a specific data type, exclude it from the result set rather than blocking the whole page, to maintain usability.
+## 2026-02-14 - [High] Authorization Bypass in Aggregate Views (Calendar)
+**Vulnerability:** The `CalendarController` displayed all appointments and hearings to any authenticated user, bypassing the `can:view appointments` and `can:view matters` middleware applied to the individual resource controllers.
+**Learning:** Aggregate views (Dashboards, Calendars, Reports) that compile data from multiple sources often miss the granular authorization checks applied to the individual resources. Restricting the "edit" or "index" page of a resource doesn't automatically protect the data when shown in a summary view.
+**Prevention:** In aggregate controllers, explicitly check permissions for each data source before querying. Ensure that the visibility of data in summary views matches the permissions required to access the detailed views.
