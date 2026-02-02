@@ -124,6 +124,7 @@ const destroy = () => {
                                 class="mt-1 block w-full"
                                 v-model="form.full_name"
                                 required
+                                :invalid="!!form.errors.full_name"
                             />
                             <InputError class="mt-2" :message="form.errors.full_name" />
                         </div>
@@ -138,6 +139,7 @@ const destroy = () => {
                                     type="text"
                                     class="mt-1 block w-full"
                                     v-model="form.national_id"
+                                    :invalid="!!form.errors.national_id"
                                 />
                                 <InputError class="mt-2" :message="form.errors.national_id" />
                             </div>
@@ -150,6 +152,7 @@ const destroy = () => {
                                     type="tel"
                                     class="mt-1 block w-full"
                                     v-model="form.phone"
+                                    :invalid="!!form.errors.phone"
                                 />
                                 <InputError class="mt-2" :message="form.errors.phone" />
                             </div>
@@ -163,6 +166,7 @@ const destroy = () => {
                                 type="email"
                                 class="mt-1 block w-full"
                                 v-model="form.email"
+                                :invalid="!!form.errors.email"
                             />
                             <InputError class="mt-2" :message="form.errors.email" />
                         </div>
@@ -231,7 +235,7 @@ const destroy = () => {
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <InputLabel for="doc_title" :value="$t('Document Title')" :required="true" />
-                                    <TextInput id="doc_title" type="text" class="mt-1 block w-full bg-white" v-model="docForm.title" required />
+                                    <TextInput id="doc_title" type="text" class="mt-1 block w-full bg-white" v-model="docForm.title" required :invalid="!!docForm.errors.title" />
                                     <InputError class="mt-2" :message="docForm.errors.title" />
                                 </div>
                                 <div>
