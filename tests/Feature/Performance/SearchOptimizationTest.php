@@ -24,6 +24,10 @@ class SearchOptimizationTest extends TestCase
     public function test_party_search_respects_type_filter_with_or_conditions()
     {
         // Create an admin user to access the route
+        $role = Role::create(['name' => 'root']);
+        $permission = Permission::create(['name' => 'view parties']);
+        $role->givePermissionTo($permission);
+
         $user = User::factory()->create();
         $user->assignRole('test-role');
 

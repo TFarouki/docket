@@ -26,6 +26,10 @@ class AppointmentControllerOptimizationTest extends TestCase
 
     public function test_index_optimizes_eager_loading()
     {
+        $role = Role::create(['name' => 'root']);
+        $permission = Permission::create(['name' => 'view appointments']);
+        $role->givePermissionTo($permission);
+
         $user = User::factory()->create();
         $user->assignRole('test-role');
 
@@ -67,6 +71,10 @@ class AppointmentControllerOptimizationTest extends TestCase
 
     public function test_create_optimizes_user_dropdown()
     {
+        $role = Role::create(['name' => 'root']);
+        $permission = Permission::create(['name' => 'create appointments']);
+        $role->givePermissionTo($permission);
+
         $user = User::factory()->create();
         $user->assignRole('test-role');
         User::factory()->count(3)->create();

@@ -5,6 +5,7 @@ namespace Tests\Feature\Performance;
 use App\Models\User;
 use App\Models\Appointment;
 use App\Models\Party;
+use App\Models\Matter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -51,6 +52,10 @@ class PayloadOptimizationTest extends TestCase
 
     public function test_create_appointment_payload_does_not_contain_user_profile_photos()
     {
+        $role = Role::create(['name' => 'root']);
+        $permission = Permission::create(['name' => 'create appointments']);
+        $role->givePermissionTo($permission);
+
         $user = User::factory()->create();
         $user->assignRole('test-role');
 
@@ -70,6 +75,10 @@ class PayloadOptimizationTest extends TestCase
 
     public function test_appointment_index_does_not_load_unused_assignee_relation()
     {
+        $role = Role::create(['name' => 'root']);
+        $permission = Permission::create(['name' => 'view appointments']);
+        $role->givePermissionTo($permission);
+
         $user = User::factory()->create();
         $user->assignRole('test-role');
         $party = Party::create(['full_name' => 'Client', 'type' => 'client']);
@@ -79,7 +88,8 @@ class PayloadOptimizationTest extends TestCase
              'party_id' => $party->id,
              'assigned_to' => $user->id,
              'start_time' => now(),
-             'status' => 'scheduled'
+             'status' => 'scheduled',
+             'notes' => 'Some long notes here',
         ]);
 
         $response = $this->actingAs($user)->get(route('appointments.index'));
@@ -92,6 +102,83 @@ class PayloadOptimizationTest extends TestCase
                 ->where('id', $appointment->id)
                 ->has('party') // party is still loaded
                 ->missing('assignee') // assignee should be missing
+                ->missing('notes') // notes should be missing (optimization)
+                ->etc()
+            )
+        );
+    }
+
+    public function test_matter_index_payload_does_not_contain_unused_fields()
+    {
+        $role = Role::create(['name' => 'root']);
+        $permission = Permission::create(['name' => 'view matters']);
+        $role->givePermissionTo($permission);
+
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        $party = Party::create(['full_name' => 'Client', 'type' => 'client']);
+
+        $matter = Matter::create([
+            'title' => 'Test Matter',
+            'party_id' => $party->id,
+            'status' => 'open',
+            'type' => 'litigation',
+            'description' => 'A very long description that should not be loaded in the index view.',
+            'agreed_fee' => 5000.00,
+            'reference_number' => 'REF123',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('matters.index'));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('Matters/Index')
+            ->has('matters.data.0', fn (Assert $json) => $json
+                ->where('id', $matter->id)
+                ->where('title', 'Test Matter')
+                ->where('reference_number', 'REF123')
+                ->missing('description')
+                ->missing('agreed_fee')
+                ->etc()
+            )
+        );
+    }
+
+    public function test_party_index_payload_does_not_contain_unused_fields()
+    {
+        $role = Role::create(['name' => 'root']);
+        $permission = Permission::create(['name' => 'view parties']);
+        $role->givePermissionTo($permission);
+
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        $party = Party::create([
+            'full_name' => 'Test Party',
+            'type' => 'client',
+            'phone' => '123456789',
+            'national_id' => 'AB123456',
+            'email' => 'test@example.com',
+            'address' => '123 Main St, Some City',
+            'notes' => 'Some notes about this party.',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('parties.index'));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('Parties/Index')
+            ->has('parties.data.0', fn (Assert $json) => $json
+                ->where('id', $party->id)
+                ->where('full_name', 'Test Party')
+                ->where('phone', '123456789')
+                ->missing('email')
+                ->missing('address')
+                ->missing('notes')
+                ->missing('type')
                 ->etc()
             )
         );

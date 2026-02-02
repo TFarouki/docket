@@ -14,7 +14,7 @@ class AppointmentController extends Controller
     public function index()
     {
         return Inertia::render('Appointments/Index', [
-            'appointments' => Appointment::query()
+            'appointments' => Appointment::select('id', 'title', 'party_id', 'start_time', 'status')
                 ->with('party:id,full_name')
                 ->when(RequestFacade::input('search'), function ($query, $search) {
                     $query->where(function ($q) use ($search) {
