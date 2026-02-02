@@ -9,22 +9,28 @@ use App\Models\Matter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PayloadOptimizationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Permission::create(['name' => 'create matters']);
+        Permission::create(['name' => 'create appointments']);
+        Permission::create(['name' => 'view appointments']);
+
+        $role = Role::create(['name' => 'test-role']);
+        $role->givePermissionTo(['create matters', 'create appointments', 'view appointments']);
+    }
+
     public function test_create_matter_payload_does_not_contain_lawyer_profile_photos()
     {
-        $role = Role::create(['name' => 'root']);
-        $permission = Permission::create(['name' => 'create matters']);
-        $role->givePermissionTo($permission);
-
         $user = User::factory()->create(['name' => 'Lawyer One']);
-        $user->assignRole($role);
-
+        $user->assignRole('test-role');
         $otherUser = User::factory()->create(['name' => 'Lawyer Two']);
 
         $response = $this->actingAs($user)->get(route('matters.create'));
@@ -51,7 +57,7 @@ class PayloadOptimizationTest extends TestCase
         $role->givePermissionTo($permission);
 
         $user = User::factory()->create();
-        $user->assignRole($role);
+        $user->assignRole('test-role');
 
         $response = $this->actingAs($user)->get(route('appointments.create'));
 
@@ -74,8 +80,7 @@ class PayloadOptimizationTest extends TestCase
         $role->givePermissionTo($permission);
 
         $user = User::factory()->create();
-        $user->assignRole($role);
-
+        $user->assignRole('test-role');
         $party = Party::create(['full_name' => 'Client', 'type' => 'client']);
 
         $appointment = Appointment::create([

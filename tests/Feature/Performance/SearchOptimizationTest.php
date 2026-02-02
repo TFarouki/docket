@@ -6,12 +6,20 @@ use App\Models\Party;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class SearchOptimizationTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Permission::create(['name' => 'view parties']);
+        $role = Role::create(['name' => 'test-role']);
+        $role->givePermissionTo('view parties');
+    }
 
     public function test_party_search_respects_type_filter_with_or_conditions()
     {
@@ -21,7 +29,7 @@ class SearchOptimizationTest extends TestCase
         $role->givePermissionTo($permission);
 
         $user = User::factory()->create();
-        $user->assignRole($role);
+        $user->assignRole('test-role');
 
         // Create a 'Lead' named 'John Doe'
         Party::create([
