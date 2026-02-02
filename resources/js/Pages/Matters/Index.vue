@@ -4,6 +4,7 @@ import SearchInput from '@/Components/SearchInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
+import { debounce } from '@/utils';
 
 const props = defineProps({
     matters: Object,
@@ -13,7 +14,7 @@ const props = defineProps({
 const search = ref(props.filters.search || '');
 const isLoading = ref(false);
 
-watch(search, (value) => {
+watch(search, debounce((value) => {
     router.get(
         route('matters.index'),
         { search: value },
@@ -24,7 +25,7 @@ watch(search, (value) => {
             onFinish: () => (isLoading.value = false),
         }
     );
-});
+}, 300));
 </script>
 
 <template>
