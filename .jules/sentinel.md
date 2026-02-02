@@ -42,3 +42,8 @@
 **Vulnerability:** `DocumentController::store` accepted arbitrary `documentable_type` and `documentable_id` without validation. This allowed users to attach files to any model in the system (e.g., restricted `SystemSetting` or other users' data) and potentially create arbitrary directories via `class_basename`.
 **Learning:** Polymorphic relationships are powerful but dangerous if inputs are blindly trusted. Standard validation rules often miss dynamic class checks.
 **Prevention:** Always whitelist allowed `documentable_type` values using `Rule::in()`. Validate that the referenced `documentable_id` actually exists in the corresponding table using a custom closure or explicit check.
+
+## 2026-02-14 - [High] Data Leak in CalendarController
+**Vulnerability:** The `CalendarController::index` endpoint exposed all appointments and hearings to any authenticated user, regardless of their permissions.
+**Learning:** Dashboard-like or aggregate views (like calendars, feeds) often aggregate data from multiple sources. It's easy to forget to apply the granular permissions of the individual resources (e.g., `view appointments`, `view matters`) to the aggregate query.
+**Prevention:** Always check permissions for each data source in an aggregate controller. If a user lacks permission for a specific data type, exclude it from the result set rather than blocking the whole page, to maintain usability.
