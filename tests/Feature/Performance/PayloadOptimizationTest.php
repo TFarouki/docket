@@ -5,21 +5,32 @@ namespace Tests\Feature\Performance;
 use App\Models\User;
 use App\Models\Appointment;
 use App\Models\Party;
+use App\Models\Matter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PayloadOptimizationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Permission::create(['name' => 'create matters']);
+        Permission::create(['name' => 'create appointments']);
+        Permission::create(['name' => 'view appointments']);
+
+        $role = Role::create(['name' => 'test-role']);
+        $role->givePermissionTo(['create matters', 'create appointments', 'view appointments']);
+    }
+
     public function test_create_matter_payload_does_not_contain_lawyer_profile_photos()
     {
-        // Permission middleware might block access, so we need a user with permissions if any.
-        // Assuming basic auth is enough for now based on exploration.
-        // But UserController routes had 'can:manage users'. MatterController doesn't seem to have explicit middleware in the controller file itself except 'auth'.
-
         $user = User::factory()->create(['name' => 'Lawyer One']);
+        $user->assignRole('test-role');
         $otherUser = User::factory()->create(['name' => 'Lawyer Two']);
 
         $response = $this->actingAs($user)->get(route('matters.create'));
@@ -41,7 +52,12 @@ class PayloadOptimizationTest extends TestCase
 
     public function test_create_appointment_payload_does_not_contain_user_profile_photos()
     {
+        $role = Role::create(['name' => 'root']);
+        $permission = Permission::create(['name' => 'create appointments']);
+        $role->givePermissionTo($permission);
+
         $user = User::factory()->create();
+        $user->assignRole('test-role');
 
         $response = $this->actingAs($user)->get(route('appointments.create'));
 
@@ -59,7 +75,12 @@ class PayloadOptimizationTest extends TestCase
 
     public function test_appointment_index_does_not_load_unused_assignee_relation()
     {
+        $role = Role::create(['name' => 'root']);
+        $permission = Permission::create(['name' => 'view appointments']);
+        $role->givePermissionTo($permission);
+
         $user = User::factory()->create();
+        $user->assignRole('test-role');
         $party = Party::create(['full_name' => 'Client', 'type' => 'client']);
 
         $appointment = Appointment::create([
@@ -67,7 +88,8 @@ class PayloadOptimizationTest extends TestCase
              'party_id' => $party->id,
              'assigned_to' => $user->id,
              'start_time' => now(),
-             'status' => 'scheduled'
+             'status' => 'scheduled',
+             'notes' => 'Some long notes here',
         ]);
 
         $response = $this->actingAs($user)->get(route('appointments.index'));
@@ -80,6 +102,83 @@ class PayloadOptimizationTest extends TestCase
                 ->where('id', $appointment->id)
                 ->has('party') // party is still loaded
                 ->missing('assignee') // assignee should be missing
+                ->missing('notes') // notes should be missing (optimization)
+                ->etc()
+            )
+        );
+    }
+
+    public function test_matter_index_payload_does_not_contain_unused_fields()
+    {
+        $role = Role::create(['name' => 'root']);
+        $permission = Permission::create(['name' => 'view matters']);
+        $role->givePermissionTo($permission);
+
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        $party = Party::create(['full_name' => 'Client', 'type' => 'client']);
+
+        $matter = Matter::create([
+            'title' => 'Test Matter',
+            'party_id' => $party->id,
+            'status' => 'open',
+            'type' => 'litigation',
+            'description' => 'A very long description that should not be loaded in the index view.',
+            'agreed_fee' => 5000.00,
+            'reference_number' => 'REF123',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('matters.index'));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('Matters/Index')
+            ->has('matters.data.0', fn (Assert $json) => $json
+                ->where('id', $matter->id)
+                ->where('title', 'Test Matter')
+                ->where('reference_number', 'REF123')
+                ->missing('description')
+                ->missing('agreed_fee')
+                ->etc()
+            )
+        );
+    }
+
+    public function test_party_index_payload_does_not_contain_unused_fields()
+    {
+        $role = Role::create(['name' => 'root']);
+        $permission = Permission::create(['name' => 'view parties']);
+        $role->givePermissionTo($permission);
+
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        $party = Party::create([
+            'full_name' => 'Test Party',
+            'type' => 'client',
+            'phone' => '123456789',
+            'national_id' => 'AB123456',
+            'email' => 'test@example.com',
+            'address' => '123 Main St, Some City',
+            'notes' => 'Some notes about this party.',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('parties.index'));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('Parties/Index')
+            ->has('parties.data.0', fn (Assert $json) => $json
+                ->where('id', $party->id)
+                ->where('full_name', 'Test Party')
+                ->where('phone', '123456789')
+                ->missing('email')
+                ->missing('address')
+                ->missing('notes')
+                ->missing('type')
                 ->etc()
             )
         );

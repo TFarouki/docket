@@ -16,7 +16,7 @@ class PartyController extends Controller
         }
 
         return Inertia::render('Parties/Index', [
-            'parties' => Party::query()
+            'parties' => Party::select('id', 'full_name', 'phone', 'national_id')
                 ->when(RequestFacade::input('search'), function ($query, $search) {
                     $query->where(function ($q) use ($search) {
                         $q->where('full_name', 'like', "%{$search}%")
@@ -24,7 +24,9 @@ class PartyController extends Controller
                             ->orWhere('national_id', 'like', "%{$search}%");
                     });
                 })
-                ->latest()
+                ->when(RequestFacade::input('type'), function ($query, $type) {
+                    $query->where('type', $type);
+                })
                 ->latest()
                 ->paginate(10)
                 ->withQueryString(),
