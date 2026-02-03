@@ -20,19 +20,19 @@ return new class extends Migration
             'hearings',
             'tasks',
             'appointments',
-            'document_categories'
+            'document_categories',
         ];
 
         foreach ($tables as $table) {
             if (Schema::hasTable($table)) {
                 Schema::table($table, function (Blueprint $table) {
-                    if (!Schema::hasColumn($table->getTable(), 'deleted_at')) {
+                    if (! Schema::hasColumn($table->getTable(), 'deleted_at')) {
                         $table->softDeletes();
                     }
-                    if (!Schema::hasColumn($table->getTable(), 'created_by')) {
+                    if (! Schema::hasColumn($table->getTable(), 'created_by')) {
                         $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
                     }
-                    if (!Schema::hasColumn($table->getTable(), 'updated_by')) {
+                    if (! Schema::hasColumn($table->getTable(), 'updated_by')) {
                         $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
                     }
                 });
@@ -54,7 +54,7 @@ return new class extends Migration
             'hearings',
             'tasks',
             'appointments',
-            'document_categories'
+            'document_categories',
         ];
 
         foreach ($tables as $table) {

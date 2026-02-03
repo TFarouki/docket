@@ -5,12 +5,10 @@ namespace Tests\Feature;
 use App\Models\Document;
 use App\Models\DocumentCategory;
 use App\Models\User;
-use App\Models\Matter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class DocumentSecurityTest extends TestCase

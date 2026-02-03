@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Security;
 
-use App\Models\User;
 use App\Models\Matter;
 use App\Models\Party;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;

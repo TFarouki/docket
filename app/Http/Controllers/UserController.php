@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DocumentCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\Support\Facades\Storage;
-use App\Models\DocumentCategory;
 
 class UserController extends Controller
 {
@@ -48,7 +48,7 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->first_name . ' ' . $request->last_name,
+            'name' => $request->first_name.' '.$request->last_name,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
@@ -93,12 +93,12 @@ class UserController extends Controller
                 Storage::disk('public')->delete($user->profile_photo_path);
             }
             $user->update([
-                'profile_photo_path' => $request->file('profile_photo')->store('profile-photos', 'public')
+                'profile_photo_path' => $request->file('profile_photo')->store('profile-photos', 'public'),
             ]);
         }
 
         $user->update([
-            'name' => $request->first_name . ' ' . $request->last_name,
+            'name' => $request->first_name.' '.$request->last_name,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
@@ -107,8 +107,6 @@ class UserController extends Controller
             'address' => $request->address,
             'professional_card_id' => $request->professional_card_id,
         ]);
-
-
 
         $user->syncRoles($request->roles);
 

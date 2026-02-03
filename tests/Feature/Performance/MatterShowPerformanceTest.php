@@ -7,10 +7,10 @@ use App\Models\Hearing;
 use App\Models\Matter;
 use App\Models\Party;
 use App\Models\User;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;
+use Spatie\Permission\Models\Permission;
+use Tests\TestCase;
 
 class MatterShowPerformanceTest extends TestCase
 {
@@ -20,7 +20,7 @@ class MatterShowPerformanceTest extends TestCase
     {
         parent::setUp();
         // Create permission if it doesn't exist
-        if (!Permission::where('name', 'view matters')->exists()) {
+        if (! Permission::where('name', 'view matters')->exists()) {
             Permission::create(['name' => 'view matters']);
         }
     }
@@ -79,8 +79,8 @@ class MatterShowPerformanceTest extends TestCase
                     ->missing('opponent_name')
                     ->missing('created_at')
                     ->has('hearings.0', fn (Assert $json) => $json
-                         ->missing('notes')
-                         ->etc()
+                        ->missing('notes')
+                        ->etc()
                     )
                     ->etc()
                 )

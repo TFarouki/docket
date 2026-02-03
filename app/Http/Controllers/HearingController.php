@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hearing;
 use App\Models\CourtCase;
+use App\Models\Hearing;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -32,6 +32,7 @@ class HearingController extends Controller
 
         // Redirect back to the Matter page
         $courtCase = CourtCase::findOrFail($validated['court_case_id']);
+
         return redirect()->route('matters.show', $courtCase->matter_id)->with('success', 'Hearing added successfully.');
     }
 }

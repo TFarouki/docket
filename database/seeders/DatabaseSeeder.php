@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class,
         ]);
-        
+
         // User::factory(10)->create();
 
         // Create Admin User
@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@docket.com',
             'password' => bcrypt('password'), // or default
         ]);
-        
+
         $user->assignRole('owner');
     }
 }

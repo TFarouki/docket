@@ -6,8 +6,8 @@ use App\Models\Matter;
 use App\Models\Party;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Request as RequestFacade;
+use Inertia\Inertia;
 
 class MatterController extends Controller
 {
@@ -31,6 +31,7 @@ class MatterController extends Controller
                     if ($matter->responsibleLawyer) {
                         $matter->responsibleLawyer->makeHidden('profile_photo_url');
                     }
+
                     return $matter;
                 }),
             'filters' => RequestFacade::only(['search']),
@@ -56,7 +57,7 @@ class MatterController extends Controller
             'party_id' => 'required|exists:parties,id',
             'responsible_lawyer_id' => 'nullable|exists:users,id',
             'reference_number' => 'nullable|string|max:50',
-            'year' => 'nullable|integer|min:2000|max:'.(date('Y')+1),
+            'year' => 'nullable|integer|min:2000|max:'.(date('Y') + 1),
             'type' => 'required|in:litigation,procedure,consultation',
             'case_type' => 'nullable|string|max:255',
             'court_name' => 'nullable|string|max:255',
@@ -67,9 +68,9 @@ class MatterController extends Controller
 
         Matter::create($validated);
 
-
         return redirect()->route('matters.index')->with('success', 'Matter created successfully.');
     }
+
     public function show(Matter $matter)
     {
         abort_unless(auth()->user()->can('view matters'), 403);
@@ -79,7 +80,7 @@ class MatterController extends Controller
             'party:id,full_name',
             'responsibleLawyer:id,name',
             'courtCases:id,matter_id,court_name,case_number,judge_name,opponent_lawyer,current_stage',
-            'courtCases.hearings:id,court_case_id,date_time,procedure_result'
+            'courtCases.hearings:id,court_case_id,date_time,procedure_result',
         ]);
 
         if ($matter->responsibleLawyer) {

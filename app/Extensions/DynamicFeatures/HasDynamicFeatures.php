@@ -16,8 +16,12 @@ trait HasDynamicFeatures
         static::creating(function ($model) {
             if (FeatureManager::isEnabled(get_class($model), 'user_tracking')) {
                 if (Auth::check()) {
-                    if (!$model->created_by) $model->created_by = Auth::id();
-                    if (!$model->updated_by) $model->updated_by = Auth::id();
+                    if (! $model->created_by) {
+                        $model->created_by = Auth::id();
+                    }
+                    if (! $model->updated_by) {
+                        $model->updated_by = Auth::id();
+                    }
                 }
             }
         });
@@ -32,7 +36,7 @@ trait HasDynamicFeatures
 
         // 2. Soft Deletes (Global Scope)
         if (FeatureManager::isEnabled(static::class, 'soft_delete')) {
-            static::addGlobalScope(new SoftDeletingScope());
+            static::addGlobalScope(new SoftDeletingScope);
         }
     }
 
@@ -48,12 +52,13 @@ trait HasDynamicFeatures
             // Logic similar to SoftDeletes trait
             if (is_null($this->{$this->getDeletedAtColumn()})) {
                 $this->{$this->getDeletedAtColumn()} = $this->freshTimestamp();
-                
+
                 // If tracking is on, we might want to record who deleted it?
                 // For now, standard soft delete.
-                
+
                 return $this->save();
             }
+
             return true;
         }
 

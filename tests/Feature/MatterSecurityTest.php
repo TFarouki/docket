@@ -50,7 +50,7 @@ class MatterSecurityTest extends TestCase
             'full_name' => 'Test Client',
             'type' => 'client',
             'phone' => '123456789',
-            'email' => 'client@test.com'
+            'email' => 'client@test.com',
         ]);
 
         $data = [
@@ -72,7 +72,7 @@ class MatterSecurityTest extends TestCase
             'full_name' => 'Test Client',
             'type' => 'client',
             'phone' => '123456789',
-            'email' => 'client@test.com'
+            'email' => 'client@test.com',
         ]);
 
         $matter = Matter::create([

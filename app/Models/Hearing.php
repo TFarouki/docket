@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Extensions\DynamicFeatures\HasDynamicFeatures;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Extensions\DynamicFeatures\HasDynamicFeatures;
 
 class Hearing extends Model
 {
-    use HasFactory, HasDynamicFeatures;
+    use HasDynamicFeatures, HasFactory;
 
     protected $fillable = [
         'court_case_id',

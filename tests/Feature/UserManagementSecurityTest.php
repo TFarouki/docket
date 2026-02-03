@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class UserManagementSecurityTest extends TestCase
@@ -44,7 +43,7 @@ class UserManagementSecurityTest extends TestCase
             'email' => 'hacker@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
-            'roles' => ['admin'] // Attempting privilege escalation
+            'roles' => ['admin'], // Attempting privilege escalation
         ];
 
         $response = $this->actingAs($user)->post(route('users.store'), $data);
