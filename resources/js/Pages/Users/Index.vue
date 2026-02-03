@@ -1,5 +1,6 @@
 <script setup>
 import EmptyState from '@/Components/EmptyState.vue';
+import Pagination from '@/Components/Pagination.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -100,19 +101,8 @@ watch(search, debounce((value) => {
                     </div>
                     
                     <!-- Pagination -->
-                    <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between" v-if="users.links.length > 3">
-                        <div class="flex gap-1">
-                             <template v-for="(link, key) in users.links" :key="key">
-                                <Link
-                                    v-if="link.url"
-                                    :href="link.url"
-                                    class="px-3 py-1 text-sm border rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                                    :class="{ 'bg-brand-50 dark:bg-brand-900/40 border-brand-500 dark:border-brand-600 text-brand-700 dark:text-brand-400': link.active, 'text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-600': !link.active }"
-                                    v-html="link.label"
-                                />
-                                <span v-else class="px-3 py-1 text-sm text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 rounded" v-html="link.label"></span>
-                             </template>
-                        </div>
+                    <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700" v-if="users.links.length > 3">
+                        <Pagination :links="users.links" />
                     </div>
                 </div>
             </div>

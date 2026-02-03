@@ -29,3 +29,7 @@
 ## 2026-02-18 - Searchable Select Accessibility
 **Learning:** Custom select components often lack basic keyboard accessibility (tab to focus, enter to toggle). Adding these along with proper ARIA roles (combobox, listbox) transforms the component from 'mouse-only' to fully accessible.
 **Action:** Ensure all custom form controls (Dropdowns, MultiSelects) implement `tabindex="0"`, proper role definitions, and keyboard event handlers for interaction.
+
+## 2026-02-03 - Accessible Pagination
+**Learning:** Default Laravel/Inertia pagination links lack semantic structure (<nav>) and ARIA attributes (aria-current, aria-label). Using raw `v-html` for labels also makes replacing text entities (&laquo;) with modern icons difficult.
+**Action:** Created a reusable `Pagination.vue` component that wraps links in a `<nav>`, applies `aria-current="page"`, and swaps text labels for icons, ensuring consistent accessibility and visual polish across all index pages.

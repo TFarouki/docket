@@ -1,5 +1,6 @@
 <script setup>
 import EmptyState from '@/Components/EmptyState.vue';
+import Pagination from '@/Components/Pagination.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -125,19 +126,8 @@ const formatDateTime = (dateStr) => {
                     </div>
 
                     <!-- Pagination -->
-                    <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between" v-if="appointments.links.length > 3">
-                         <div class="flex gap-1">
-                             <template v-for="(link, key) in appointments.links" :key="key">
-                                <Link
-                                    v-if="link.url"
-                                    :href="link.url"
-                                    class="px-3 py-1 text-sm border rounded hover:bg-gray-50"
-                                    :class="{ 'bg-brand-50 border-brand-500 text-brand-700': link.active, 'text-gray-600 border-gray-300': !link.active }"
-                                    v-html="link.label"
-                                />
-                                <span v-else class="px-3 py-1 text-sm text-gray-400 border border-gray-200 rounded" v-html="link.label"></span>
-                             </template>
-                        </div>
+                    <div class="px-6 py-4 border-t border-gray-100" v-if="appointments.links.length > 3">
+                        <Pagination :links="appointments.links" />
                     </div>
                 </div>
             </div>
