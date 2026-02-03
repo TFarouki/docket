@@ -93,6 +93,29 @@ class DocumentController extends Controller
             abort(403);
         }
 
+        $user = auth()->user();
+        $allowed = false;
+
+        switch ($document->documentable_type) {
+            case 'App\Models\Matter':
+            case 'App\Models\CourtCase':
+            case 'App\Models\Hearing':
+                $allowed = $user->can('view matters');
+                break;
+            case 'App\Models\Party':
+                $allowed = $user->can('view parties');
+                break;
+            case 'App\Models\User':
+                $allowed = $user->id === $document->documentable_id || $user->can('manage users');
+                break;
+            default:
+                $allowed = false;
+        }
+
+        if (!$allowed) {
+            abort(403);
+        }
+
         return Storage::disk('public')->download($document->file_path, $document->title . '.' . $document->file_type);
     }
 }
