@@ -93,6 +93,31 @@ class DocumentController extends Controller
             abort(403);
         }
 
+        $parent = $document->documentable;
+
+        // Security check: Ensure user has access to the parent resource
+        if ($parent instanceof \App\Models\User) {
+            if (auth()->id() !== $parent->id && !auth()->user()->can('manage users')) {
+                abort(403, 'Unauthorized access to user documents.');
+            }
+        } elseif ($parent instanceof \App\Models\Matter) {
+            if (!auth()->user()->can('view matters')) {
+                abort(403, 'Unauthorized access to matter documents.');
+            }
+        } elseif ($parent instanceof \App\Models\Party) {
+            if (!auth()->user()->can('view parties')) {
+                abort(403, 'Unauthorized access to party documents.');
+            }
+        } elseif ($parent instanceof \App\Models\CourtCase || $parent instanceof \App\Models\Hearing) {
+            // These belong to matters, so checking 'view matters' is appropriate
+            if (!auth()->user()->can('view matters')) {
+                abort(403, 'Unauthorized access to case documents.');
+            }
+        } else {
+            // Default deny for any unhandled documentable types
+            abort(403, 'Unauthorized access.');
+        }
+
         return Storage::disk('public')->download($document->file_path, $document->title . '.' . $document->file_type);
     }
 }
