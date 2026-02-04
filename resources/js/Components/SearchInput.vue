@@ -1,6 +1,6 @@
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 const model = defineModel({
     type: String,
@@ -19,6 +19,7 @@ defineProps({
 });
 
 const inputRef = ref(null);
+const shortcutKey = ref('Ctrl K');
 
 const clear = () => {
     model.value = '';
@@ -27,6 +28,30 @@ const clear = () => {
         inputRef.value.focus();
     }
 };
+
+const handleKeydown = (e) => {
+    // Check for Cmd+K (Mac) or Ctrl+K (Windows/Linux)
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        inputRef.value?.focus();
+    }
+    // Check for / (if not already focusing an input)
+    if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA' && document.activeElement.isContentEditable !== true) {
+        e.preventDefault();
+        inputRef.value?.focus();
+    }
+};
+
+onMounted(() => {
+    if (navigator.userAgent.indexOf('Mac') !== -1) {
+        shortcutKey.value = '⌘K';
+    }
+    window.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeydown);
+});
 </script>
 
 <template>
@@ -46,6 +71,10 @@ const clear = () => {
         />
 
         <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+            <div v-if="!model && !loading" class="hidden sm:flex pointer-events-none items-center">
+                <span class="text-xs text-gray-400 border border-gray-300 rounded px-1.5 py-0.5 bg-gray-50">{{ shortcutKey }}</span>
+            </div>
+
             <button
                 v-if="model && !loading"
                 @click="clear"
