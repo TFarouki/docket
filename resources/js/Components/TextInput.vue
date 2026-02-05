@@ -31,7 +31,6 @@ defineExpose({ focus: () => input.value.focus() });
             'border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-brand-500 dark:focus:border-brand-600 focus:ring-brand-500 dark:focus:ring-brand-600': !invalid,
             'border-red-500 dark:border-red-500 dark:bg-gray-900 dark:text-gray-300 focus:border-red-500 dark:focus:border-red-500 focus:ring-red-500 dark:focus:ring-red-500': invalid,
         }"
-        :aria-invalid="invalid"
         v-model="model"
         ref="input"
     />

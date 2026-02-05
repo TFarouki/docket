@@ -93,29 +93,27 @@ class DocumentController extends Controller
             abort(403);
         }
 
-        $parent = $document->documentable;
+        $user = auth()->user();
+        $allowed = false;
 
-        // Security check: Ensure user has access to the parent resource
-        if ($parent instanceof \App\Models\User) {
-            if (auth()->id() !== $parent->id && !auth()->user()->can('manage users')) {
-                abort(403, 'Unauthorized access to user documents.');
-            }
-        } elseif ($parent instanceof \App\Models\Matter) {
-            if (!auth()->user()->can('view matters')) {
-                abort(403, 'Unauthorized access to matter documents.');
-            }
-        } elseif ($parent instanceof \App\Models\Party) {
-            if (!auth()->user()->can('view parties')) {
-                abort(403, 'Unauthorized access to party documents.');
-            }
-        } elseif ($parent instanceof \App\Models\CourtCase || $parent instanceof \App\Models\Hearing) {
-            // These belong to matters, so checking 'view matters' is appropriate
-            if (!auth()->user()->can('view matters')) {
-                abort(403, 'Unauthorized access to case documents.');
-            }
-        } else {
-            // Default deny for any unhandled documentable types
-            abort(403, 'Unauthorized access.');
+        switch ($document->documentable_type) {
+            case 'App\Models\Matter':
+            case 'App\Models\CourtCase':
+            case 'App\Models\Hearing':
+                $allowed = $user->can('view matters');
+                break;
+            case 'App\Models\Party':
+                $allowed = $user->can('view parties');
+                break;
+            case 'App\Models\User':
+                $allowed = $user->id === $document->documentable_id || $user->can('manage users');
+                break;
+            default:
+                $allowed = false;
+        }
+
+        if (!$allowed) {
+            abort(403);
         }
 
         return Storage::disk('public')->download($document->file_path, $document->title . '.' . $document->file_type);
