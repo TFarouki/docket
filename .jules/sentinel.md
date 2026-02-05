@@ -47,3 +47,8 @@
 **Vulnerability:** The `CalendarController` displayed all appointments and hearings to any authenticated user, bypassing the `can:view appointments` and `can:view matters` middleware applied to the individual resource controllers.
 **Learning:** Aggregate views (Dashboards, Calendars, Reports) that compile data from multiple sources often miss the granular authorization checks applied to the individual resources. Restricting the "edit" or "index" page of a resource doesn't automatically protect the data when shown in a summary view.
 **Prevention:** In aggregate controllers, explicitly check permissions for each data source before querying. Ensure that the visibility of data in summary views matches the permissions required to access the detailed views.
+
+## 2026-02-28 - [Critical] IDOR in Polymorphic Document Downloads
+**Vulnerability:** The `DocumentController::download` endpoint checked only the global `view documents` permission, allowing users to download documents attached to entities they couldn't access (e.g., restricted Matters or other Users).
+**Learning:** Global permissions (like `view documents`) are insufficient for protecting resources that inherit their sensitivity from a parent model. Middleware authorization on the controller is bypassed when accessing specific resource IDs directly if not re-verified.
+**Prevention:** Implement "Deep Authorization" for polymorphic resources: Always verify access to the `documentable` (parent) entity in the download method using a `switch` on `documentable_type` before serving the file.

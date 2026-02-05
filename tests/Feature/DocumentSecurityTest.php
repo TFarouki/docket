@@ -26,6 +26,7 @@ class DocumentSecurityTest extends TestCase
         Permission::firstOrCreate(['name' => 'view documents']);
         Permission::firstOrCreate(['name' => 'create documents']);
         Permission::firstOrCreate(['name' => 'delete documents']);
+        Permission::firstOrCreate(['name' => 'view matters']);
     }
 
     public function test_user_can_download_document_with_permission()
@@ -34,6 +35,7 @@ class DocumentSecurityTest extends TestCase
 
         $user = User::factory()->create();
         $user->givePermissionTo('view documents');
+        $user->givePermissionTo('view matters');
 
         $category = DocumentCategory::create(['name' => 'Contracts', 'type' => 'legal']);
 
