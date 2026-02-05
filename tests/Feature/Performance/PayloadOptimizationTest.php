@@ -52,10 +52,6 @@ class PayloadOptimizationTest extends TestCase
 
     public function test_create_appointment_payload_does_not_contain_user_profile_photos()
     {
-        $role = Role::create(['name' => 'root']);
-        $permission = Permission::create(['name' => 'create appointments']);
-        $role->givePermissionTo($permission);
-
         $user = User::factory()->create();
         $user->assignRole('test-role');
 
@@ -75,10 +71,6 @@ class PayloadOptimizationTest extends TestCase
 
     public function test_appointment_index_does_not_load_unused_assignee_relation()
     {
-        $role = Role::create(['name' => 'root']);
-        $permission = Permission::create(['name' => 'view appointments']);
-        $role->givePermissionTo($permission);
-
         $user = User::factory()->create();
         $user->assignRole('test-role');
         $party = Party::create(['full_name' => 'Client', 'type' => 'client']);
