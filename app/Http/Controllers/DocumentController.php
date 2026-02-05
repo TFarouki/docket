@@ -14,7 +14,7 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        if (!auth()->user()->can('create documents')) {
+        if (! auth()->user()->can('create documents')) {
             abort(403);
         }
 
@@ -36,14 +36,15 @@ class DocumentController extends Controller
                 'integer',
                 function ($attribute, $value, $fail) use ($request, $allowedModels) {
                     $type = $request->input('documentable_type');
-                    if (!in_array($type, $allowedModels)) {
+                    if (! in_array($type, $allowedModels)) {
                         return; // Type validation handles this
                     }
-                    if (!class_exists($type)) {
-                         $fail("The document type class does not exist.");
-                         return;
+                    if (! class_exists($type)) {
+                        $fail('The document type class does not exist.');
+
+                        return;
                     }
-                    if (!$type::where('id', $value)->exists()) {
+                    if (! $type::where('id', $value)->exists()) {
                         $fail("The selected $attribute is invalid.");
                     }
                 },
@@ -52,7 +53,7 @@ class DocumentController extends Controller
         ]);
 
         $file = $request->file('file');
-        $path = $file->store('documents/' . strtolower(class_basename($request->documentable_type)), 'public');
+        $path = $file->store('documents/'.strtolower(class_basename($request->documentable_type)), 'public');
 
         Document::create([
             'title' => $request->title,
@@ -74,7 +75,7 @@ class DocumentController extends Controller
      */
     public function destroy(Document $document)
     {
-        if (!auth()->user()->can('delete documents')) {
+        if (! auth()->user()->can('delete documents')) {
             abort(403);
         }
 
@@ -89,7 +90,7 @@ class DocumentController extends Controller
      */
     public function download(Document $document)
     {
-        if (!auth()->user()->can('view documents')) {
+        if (! auth()->user()->can('view documents')) {
             abort(403);
         }
 

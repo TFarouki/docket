@@ -27,7 +27,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @return array<string, mixed>
      */
-   public function share(Request $request): array
+    public function share(Request $request): array
     {
         return [
             ...parent::share($request),
@@ -37,7 +37,7 @@ class HandleInertiaRequests extends Middleware
                         // Limit the user attributes (Security Fix)
                         $request->user()->only('id', 'name', 'email', 'profile_photo_url'),
                         // Include the roles (Main Feature)
-                        ['roles' => $request->user()->load('roles')->roles] 
+                        ['roles' => $request->user()->load('roles')->roles]
                     )
                     : null,
             ],

@@ -4,8 +4,8 @@ namespace Tests\Feature\Security;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class UserAuthorizationTest extends TestCase
@@ -42,7 +42,7 @@ class UserAuthorizationTest extends TestCase
             'email' => 'bad@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
-            'roles' => ['admin']
+            'roles' => ['admin'],
         ]);
         $response->assertStatus(403);
     }

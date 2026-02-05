@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::table('documents', function (Blueprint $table) {
             // Drop old column
             $table->dropConstrainedForeignId('matter_id');
-            
+
             // Add polymorphic columns
             $table->morphs('documentable'); // documentable_id and documentable_type
-            
+
             // Add category/type field
             $table->string('category')->nullable()->after('title'); // ID, Contract, Training, etc.
         });

@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Party;
-use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as RequestFacade;
+use Inertia\Inertia;
 
 class PartyController extends Controller
 {
     public function index()
     {
-        if (!auth()->user()->can('view parties')) {
+        if (! auth()->user()->can('view parties')) {
             abort(403);
         }
 
@@ -36,7 +36,7 @@ class PartyController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('create parties')) {
+        if (! auth()->user()->can('create parties')) {
             abort(403);
         }
 
@@ -45,7 +45,7 @@ class PartyController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('create parties')) {
+        if (! auth()->user()->can('create parties')) {
             abort(403);
         }
 
@@ -62,9 +62,10 @@ class PartyController extends Controller
 
         return redirect()->route('parties.index')->with('success', 'Party created successfully.');
     }
+
     public function edit(Party $party)
     {
-        if (!auth()->user()->can('edit parties')) {
+        if (! auth()->user()->can('edit parties')) {
             abort(403);
         }
 
@@ -76,7 +77,7 @@ class PartyController extends Controller
 
     public function update(Request $request, Party $party)
     {
-        if (!auth()->user()->can('edit parties')) {
+        if (! auth()->user()->can('edit parties')) {
             abort(403);
         }
 
@@ -96,7 +97,7 @@ class PartyController extends Controller
 
     public function destroy(Party $party)
     {
-        if (!auth()->user()->can('delete parties')) {
+        if (! auth()->user()->can('delete parties')) {
             abort(403);
         }
 

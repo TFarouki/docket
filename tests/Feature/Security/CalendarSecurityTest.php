@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Security;
 
-use App\Models\User;
 use App\Models\Appointment;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
-use Inertia\Testing\AssertableInertia as Assert;
 
 class CalendarSecurityTest extends TestCase
 {

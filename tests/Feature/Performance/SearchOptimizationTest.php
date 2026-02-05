@@ -5,9 +5,9 @@ namespace Tests\Feature\Performance;
 use App\Models\Party;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class SearchOptimizationTest extends TestCase
 {

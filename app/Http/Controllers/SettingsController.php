@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class SettingsController extends Controller
 {
     public function updateLocale(\Illuminate\Http\Request $request)
@@ -27,6 +25,7 @@ class SettingsController extends Controller
         if (in_array($locale, ['en', 'ar', 'fr'])) {
             session(['locale' => $locale]);
         }
+
         return back();
     }
 }

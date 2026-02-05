@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Extensions\DynamicFeatures\HasDynamicFeatures;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Extensions\DynamicFeatures\HasDynamicFeatures;
 
 class DocumentCategory extends Model
 {
-    use HasFactory, HasDynamicFeatures;
+    use HasDynamicFeatures, HasFactory;
 
     protected $fillable = [
         'name',

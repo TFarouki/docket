@@ -2,15 +2,15 @@
 
 namespace Tests\Feature\Performance;
 
-use App\Models\User;
 use App\Models\Appointment;
-use App\Models\Party;
 use App\Models\Matter;
+use App\Models\Party;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class PayloadOptimizationTest extends TestCase
 {
@@ -84,12 +84,12 @@ class PayloadOptimizationTest extends TestCase
         $party = Party::create(['full_name' => 'Client', 'type' => 'client']);
 
         $appointment = Appointment::create([
-             'title' => 'Meeting',
-             'party_id' => $party->id,
-             'assigned_to' => $user->id,
-             'start_time' => now(),
-             'status' => 'scheduled',
-             'notes' => 'Some long notes here',
+            'title' => 'Meeting',
+            'party_id' => $party->id,
+            'assigned_to' => $user->id,
+            'start_time' => now(),
+            'status' => 'scheduled',
+            'notes' => 'Some long notes here',
         ]);
 
         $response = $this->actingAs($user)->get(route('appointments.index'));

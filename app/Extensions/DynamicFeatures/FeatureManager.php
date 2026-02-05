@@ -3,7 +3,6 @@
 namespace App\Extensions\DynamicFeatures;
 
 use App\Models\ModelSetting;
-use Illuminate\Support\Facades\Cache;
 
 class FeatureManager
 {
@@ -11,10 +10,6 @@ class FeatureManager
 
     /**
      * Check if a feature is enabled for a specific model class.
-     *
-     * @param string $modelClass
-     * @param string $feature
-     * @return bool
      */
     public static function isEnabled(string $modelClass, string $feature): bool
     {

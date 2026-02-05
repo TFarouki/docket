@@ -9,7 +9,7 @@ class DocumentCategoryController extends Controller
 {
     public function store(Request $request)
     {
-        if (!auth()->user()->can('create documents')) {
+        if (! auth()->user()->can('create documents')) {
             abort(403);
         }
 
@@ -28,7 +28,7 @@ class DocumentCategoryController extends Controller
 
     public function index()
     {
-        if (!auth()->user()->can('view documents')) {
+        if (! auth()->user()->can('view documents')) {
             abort(403);
         }
 

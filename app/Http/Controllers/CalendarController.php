@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\Hearing;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Carbon\Carbon;
 
 class CalendarController extends Controller
 {
@@ -17,7 +17,7 @@ class CalendarController extends Controller
         $search = $request->input('search');
         $view = $request->input('view', 'month');
         $dateParam = $request->input('date'); // Used for week view to know which week to show
-        
+
         $baseDate = $dateParam ? Carbon::parse($dateParam) : Carbon::create($year, $month, 1);
 
         if ($view === 'week') {
@@ -30,7 +30,8 @@ class CalendarController extends Controller
 
         $appointments = collect();
         if (auth()->user()->can('view appointments')) {
-            $appointments = Appointment::with(['party:id,full_name', 'assignee:id,name'])
+            $appointments = Appointment::select('id', 'title', 'start_time', 'end_time', 'status', 'party_id', 'assigned_to', 'matter_id')
+                ->with(['party:id,full_name', 'assignee:id,name'])
                 ->whereBetween('start_time', [$startDate, $endDate])
                 ->when($search, function ($query, $search) {
                     $query->where(function ($q) use ($search) {
@@ -59,7 +60,8 @@ class CalendarController extends Controller
 
         $hearings = collect();
         if (auth()->user()->can('view matters')) {
-            $hearings = Hearing::with(['courtCase.matter.party:id,full_name'])
+            $hearings = Hearing::select('id', 'court_case_id', 'date_time')
+                ->with(['courtCase:id,matter_id', 'courtCase.matter:id,party_id,title', 'courtCase.matter.party:id,full_name'])
                 ->whereBetween('date_time', [$startDate, $endDate])
                 ->when($search, function ($query, $search) {
                     $query->where(function ($q) use ($search) {
@@ -74,8 +76,8 @@ class CalendarController extends Controller
                 ->get()
                 ->map(function ($hearing) {
                     return [
-                        'id' => 'h' . $hearing->id,
-                        'title' => 'Hearing: ' . ($hearing->courtCase?->matter?->title ?? 'Session'),
+                        'id' => 'h'.$hearing->id,
+                        'title' => 'Hearing: '.($hearing->courtCase?->matter?->title ?? 'Session'),
                         'start' => $hearing->date_time,
                         'end' => null,
                         'type' => 'hearing',
@@ -90,8 +92,8 @@ class CalendarController extends Controller
 
         return Inertia::render('Calendar/Index', [
             'events' => $events,
-            'initialMonth' => (int)$baseDate->month,
-            'initialYear' => (int)$baseDate->year,
+            'initialMonth' => (int) $baseDate->month,
+            'initialYear' => (int) $baseDate->year,
             'initialDate' => $baseDate->toDateString(),
             'view' => $view,
             'filters' => ['search' => $search],

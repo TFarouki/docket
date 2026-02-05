@@ -1,21 +1,19 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SystemSettingController;
-use App\Http\Controllers\PartyController;
-use App\Http\Controllers\MatterController;
-use App\Http\Controllers\CourtCaseController;
-use App\Http\Controllers\HearingController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\CalendarController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\CourtCaseController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentCategoryController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\HearingController;
+use App\Http\Controllers\MatterController;
+use App\Http\Controllers\PartyController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SystemSettingController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [DashboardController::class, 'root']);
 
@@ -28,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/settings/locale', [SettingsController::class, 'updateLocale'])->name('settings.updateLocale');
-    
+
     // Core: Party Management
     Route::resource('parties', PartyController::class);
 
@@ -44,7 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::post('documents', [DocumentController::class, 'store'])->name('documents.store');
     Route::delete('documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
     Route::get('documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
-    
+
     Route::get('document-categories', [DocumentCategoryController::class, 'index'])->name('document-categories.index');
     Route::post('document-categories', [DocumentCategoryController::class, 'store'])->name('document-categories.store');
 

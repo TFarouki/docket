@@ -11,7 +11,7 @@ class SystemSettingController extends Controller
     public function index()
     {
         // Only root can access this
-        if (!auth()->user()->hasRole('root')) {
+        if (! auth()->user()->hasRole('root')) {
             abort(403);
         }
 
@@ -34,7 +34,7 @@ class SystemSettingController extends Controller
 
     public function update(Request $request)
     {
-        if (!auth()->user()->hasRole('root')) {
+        if (! auth()->user()->hasRole('root')) {
             abort(403);
         }
 

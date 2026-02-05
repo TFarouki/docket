@@ -7,9 +7,9 @@ use App\Models\Party;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
-use Tests\TestCase;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class MatterPerformanceTest extends TestCase
 {
@@ -28,8 +28,8 @@ class MatterPerformanceTest extends TestCase
         $lawyer = User::factory()->create();
 
         $party = Party::create([
-             'type' => 'client',
-             'full_name' => 'Test Client',
+            'type' => 'client',
+            'full_name' => 'Test Client',
         ]);
 
         Matter::create([
@@ -72,7 +72,7 @@ class MatterPerformanceTest extends TestCase
         // Create 20 matters (page size is 10, so it will load 10)
         for ($i = 0; $i < 20; $i++) {
             Matter::create([
-                'title' => 'Matter ' . $i,
+                'title' => 'Matter '.$i,
                 'party_id' => $party->id,
                 'responsible_lawyer_id' => $lawyer->id,
                 'status' => 'open',
@@ -91,9 +91,9 @@ class MatterPerformanceTest extends TestCase
         // N+1 queries ~16-18.
 
         if (count($queries) > 15) {
-             dump(array_map(fn($q) => $q['query'], $queries));
+            dump(array_map(fn ($q) => $q['query'], $queries));
         }
 
-        $this->assertLessThan(15, count($queries), "Query count is " . count($queries) . ". Potential N+1 detected.");
+        $this->assertLessThan(15, count($queries), 'Query count is '.count($queries).'. Potential N+1 detected.');
     }
 }

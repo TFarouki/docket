@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Security;
 
-use App\Models\CourtCase;
 use App\Models\Matter;
 use App\Models\Party;
 use App\Models\User;
@@ -33,7 +32,7 @@ class CourtCaseSecurityTest extends TestCase
             'full_name' => 'Test Client',
             'type' => 'client',
             'phone' => '123456789',
-            'email' => 'client@test.com'
+            'email' => 'client@test.com',
         ]);
 
         $matter = Matter::create([
@@ -56,7 +55,7 @@ class CourtCaseSecurityTest extends TestCase
             'full_name' => 'Test Client',
             'type' => 'client',
             'phone' => '123456789',
-            'email' => 'client@test.com'
+            'email' => 'client@test.com',
         ]);
 
         $matter = Matter::create([
@@ -88,7 +87,7 @@ class CourtCaseSecurityTest extends TestCase
             'full_name' => 'Test Client',
             'type' => 'client',
             'phone' => '123456789',
-            'email' => 'client@test.com'
+            'email' => 'client@test.com',
         ]);
 
         $matter = Matter::create([
