@@ -34,8 +34,8 @@ class DocumentSecurityTest extends TestCase
         Storage::fake('public');
 
         $user = User::factory()->create();
-        $user->givePermissionTo('view documents');
-        $user->givePermissionTo('view matters');
+        // Give 'view matters' as well, since the document is attached to a Matter
+        $user->givePermissionTo(['view documents', 'view matters']);
 
         $category = DocumentCategory::create(['name' => 'Contracts', 'type' => 'legal']);
 

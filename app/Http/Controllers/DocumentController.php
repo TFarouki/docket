@@ -93,31 +93,26 @@ class DocumentController extends Controller
             abort(403);
         }
 
-        // Sentinel Fix: Check access to the parent entity
-        $authorized = false;
+        $user = auth()->user();
+        $allowed = false;
 
         switch ($document->documentable_type) {
-            case 'App\Models\User':
-                // User can view their own documents or if they have manage users permission
-                if (auth()->id() === $document->documentable_id || auth()->user()->can('manage users')) {
-                    $authorized = true;
-                }
-                break;
             case 'App\Models\Matter':
             case 'App\Models\CourtCase':
             case 'App\Models\Hearing':
-                if (auth()->user()->can('view matters')) {
-                    $authorized = true;
-                }
+                $allowed = $user->can('view matters');
                 break;
             case 'App\Models\Party':
-                if (auth()->user()->can('view parties')) {
-                    $authorized = true;
-                }
+                $allowed = $user->can('view parties');
                 break;
+            case 'App\Models\User':
+                $allowed = $user->id === $document->documentable_id || $user->can('manage users');
+                break;
+            default:
+                $allowed = false;
         }
 
-        if (!$authorized) {
+        if (!$allowed) {
             abort(403);
         }
 
