@@ -33,6 +33,5 @@ defineExpose({ focus: () => input.value.focus() });
         }"
         v-model="model"
         ref="input"
-        :aria-invalid="invalid"
     />
 </template>
