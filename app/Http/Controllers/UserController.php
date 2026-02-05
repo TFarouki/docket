@@ -16,7 +16,10 @@ class UserController extends Controller
     public function index()
     {
         return Inertia::render('Users/Index', [
-            'users' => User::with('roles')->latest()->paginate(10),
+            'users' => User::select('id', 'name', 'email', 'profile_photo_path', 'created_at')
+                ->with('roles:id,name')
+                ->latest()
+                ->paginate(10),
         ]);
     }
 
