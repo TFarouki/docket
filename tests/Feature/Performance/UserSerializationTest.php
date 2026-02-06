@@ -24,11 +24,6 @@ class UserSerializationTest extends TestCase
 
     public function test_user_dropdowns_do_not_contain_profile_photo_url()
     {
-        $role = Role::create(['name' => 'root']);
-        $permission1 = Permission::create(['name' => 'create appointments']);
-        $permission2 = Permission::create(['name' => 'create matters']);
-        $role->givePermissionTo([$permission1, $permission2]);
-
         $user = User::factory()->create();
         $user->assignRole('test-role');
 
