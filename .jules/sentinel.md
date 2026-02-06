@@ -52,3 +52,8 @@
 **Vulnerability:** `DocumentController::download` only checked for a global `view documents` permission, allowing users to download documents attached to sensitive models (e.g., other users' profiles, confidential matters) if they guessed the ID.
 **Learning:** A global permission (like `view documents`) is insufficient when documents can be attached to various entities with different security levels.
 **Prevention:** Implement granular checks based on `documentable_type` in the download method. Ensure the user has permission to view the *parent entity* (e.g., `view matters` for Matter documents, `manage users` for User documents).
+
+## 2026-02-15 - [High] Authorization Bypass in System Settings
+**Vulnerability:** `SettingsController::updateLocale` allowed any authenticated user to change the global `system_locale` setting, affecting the entire application.
+**Learning:** Developers often mix "User Settings" (personal preference) and "System Settings" (global config) in the same controller (`SettingsController`), leading to missing authorization checks on the administrative actions.
+**Prevention:** Separate user preferences (e.g., `ProfileController`) from system configuration (e.g., `SystemSettingController`). Always apply `can:manage_settings` middleware to routes that modify global state.

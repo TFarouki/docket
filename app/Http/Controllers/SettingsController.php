@@ -6,6 +6,8 @@ class SettingsController extends Controller
 {
     public function updateLocale(\Illuminate\Http\Request $request)
     {
+        abort_unless(auth()->user()->can('access settings'), 403);
+
         $request->validate([
             'system_locale' => ['required', 'in:en,ar,fr'],
         ]);
