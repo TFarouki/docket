@@ -33,3 +33,7 @@
 ## 2026-02-03 - Accessible Pagination
 **Learning:** Default Laravel/Inertia pagination links lack semantic structure (<nav>) and ARIA attributes (aria-current, aria-label). Using raw `v-html` for labels also makes replacing text entities (&laquo;) with modern icons difficult.
 **Action:** Created a reusable `Pagination.vue` component that wraps links in a `<nav>`, applies `aria-current="page"`, and swaps text labels for icons, ensuring consistent accessibility and visual polish across all index pages.
+
+## 2025-02-18 - Accessible Collapsed Sidebar
+**Learning:** Collapsing a sidebar by removing text nodes (via `v-if`) makes the links inaccessible to screen readers and confusing for mouse users (no labels).
+**Action:** Instead of `v-if`, use `sr-only` class to hide text visually but keep it accessible. Add `title` attributes to links for tooltips, and `aria-hidden="true"` to decorative icons to prevent duplicate announcements.
